@@ -1,8 +1,8 @@
 <?php
 
 include_once '../php/Initiator.php';
-$objInit = new Initiator();
 
+$objInit = new Initiator();
 
 $strAction = isset($_GET['action']) ? $_GET['action'] : '';
 $strModule = isset($_GET['module']) ? urldecode($_GET['module']) : '';
@@ -48,7 +48,6 @@ switch ($strAction) {
 if ($objInit->Authentication()->hasActiveToken()) {
   exit(file_get_contents('../html/register.html'));
 }
-
 
 
 

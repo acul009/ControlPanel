@@ -3,7 +3,6 @@
 include_once '../php/LibraryManager.php';
 include_once '../php/AuthenticationManager.php';
 
-
 /**
  * Description of Initiator
  *
@@ -11,11 +10,9 @@ include_once '../php/AuthenticationManager.php';
  */
 class Initiator {
 
-
   private LibraryManager $objLibrary;
   private AuthenticationManager $objAuth;
   private PageBuilder $objPageBuilder;
-
   private static Initiator $objActive;
 
   public function __construct() {
@@ -32,7 +29,7 @@ class Initiator {
     return $this->objLibrary;
   }
 
-  public function preparePageBuilder(): void{
+  public function preparePageBuilder(): void {
     $this->objPageBuilder = new PageBuilder();
   }
 
@@ -40,7 +37,7 @@ class Initiator {
     return $this->objPageBuilder;
   }
 
-  public static function active(): Initiator{
+  public static function active(): Initiator {
     return self::$objActive;
   }
 

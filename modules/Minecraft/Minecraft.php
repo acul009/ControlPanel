@@ -70,8 +70,10 @@ class Minecraft implements ControlPanelModule {
 
   private static function buildNewServer(array $arrRequestParameters): string {
     $strServerDir = Initiator::active()->Library()->getWorkingDir() . '/modules/Minecraft/Server/Server2';
+    readdir $intNumer = 1+;
     mkdir($strServerDir);
-    $intNumber = 1
+    $intNumber = 1;
+
 
     return '';
   }
