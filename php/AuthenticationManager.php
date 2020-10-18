@@ -9,7 +9,7 @@ class AuthenticationManager {
 
   private const ACCOUNT_FILE = 'users.txt';
   private const TOKEN_FILE = 'tokens.txt';
-  private const SESSION_TIME_IN_SECONDS = 30000;
+  private const SESSION_TIME_IN_SECONDS = 300;
 
   private array $arrUsers;
   private array $arrTokens;
