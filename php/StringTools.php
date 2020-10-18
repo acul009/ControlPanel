@@ -14,8 +14,8 @@
 class StringTools {
 
   public static function startsWith(string $strHaystack, string $strNeedle): bool {
-    $intNeedleLength = count($strNeedle);
-    $intHaystackLength = count($strHaystack);
+    $intNeedleLength = strlen($strNeedle);
+    $intHaystackLength = strlen($strHaystack);
 
     if ($intNeedleLength > $intHaystackLength) {
       return false;
