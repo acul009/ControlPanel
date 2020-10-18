@@ -36,6 +36,10 @@ class Minecraft implements ControlPanelModule {
         $strPageHTML = self::buildNewServer($arrRequestParameters);
 
         break;
+      case 'config':
+        $strPageHTML = self::buildConfig($arrRequestParameters);
+
+        break;
     }
 
 
@@ -103,6 +107,12 @@ class Minecraft implements ControlPanelModule {
 
     self::$objServerBlockFiller->setSubstituteArray(['Servername' => $strServerName]);
     return (string) self::$objServerBlockFiller;
+  }
+
+  private static function buildConfig(array $arrRequestParameters): string {
+    $objConfigTemp = New TemplateFiller('ServerConfig', 'Minecraft');
+    $objConfigTemp->setSubstituteArray([]);
+    return (string) $objConfigTemp;
   }
 
 }
