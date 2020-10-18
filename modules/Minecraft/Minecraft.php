@@ -13,6 +13,8 @@
  */
 class Minecraft implements ControlPanelModule {
 
+  private static TemplateFiller $objServerBlockFiller;
+
   //put your code here
   public static function buildModuleMainPage(array $arrRequestParameters): string {
     return self::buildModuleSubPage($arrRequestParameters, 'Server');
@@ -52,8 +54,7 @@ class Minecraft implements ControlPanelModule {
 
     while ($strServerName = readdir($objServerDir)) {
       if ($strServerName != '.' && $strServerName != '..') {
-        $objPreviewTemp->setSubstituteArray(['Servername' => $strServerName]);
-        $strPreviewList .= $objPreviewTemp;
+        $strPreviewList .= self::buildServerBlock($strServerName);
       }
     }
 
@@ -90,9 +91,18 @@ class Minecraft implements ControlPanelModule {
       }
     }$strFinalServerName = $strServerPrefix . $intNumber;
     mkdir($strServerDir . '/' . $strFinalServerName);
-
-
+    $strServerBlock = self::buildServerBlock($strFinalServerName);
+    exit($strServerBlock);
     return '';
+  }
+
+  public static function buildServerBlock(string $strServerName): string {
+    if (!isset(self::$objServerBlockFiller)) {
+      self::$objServerBlockFiller = new TemplateFiller('TempServerPreview', 'Minecraft');
+    }
+
+    self::$objServerBlockFiller->setSubstituteArray(['Servername' => $strServerName]);
+    return (string) self::$objServerBlockFiller;
   }
 
 }
