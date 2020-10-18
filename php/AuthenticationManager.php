@@ -98,11 +98,25 @@ class AuthenticationManager {
 //      $objUser = unserialize($strUserData);
 //      $this->arrUsers[$objUser->getUserName()] = $objUser;
 //    }
-    $this->arrUsers = unserialize(file_get_contents(Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE));
+    $strUserData = file_get_contents(Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE);
+    if ($strUserData === false) {
+      $this->arrUsers = [];
+      $this->saveUsers();
+    } else {
+      $this->arrUsers = unserialize($strUserData);
+    }
   }
 
   private function loadTokens(): void {
-    $this->arrTokens = unserialize(file_get_contents(Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE));
+    $strTokenData = file_get_contents(Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE);
+    if ($strTokenData === false) {
+      $objNewToken = Token::createFirstAdminToken();
+      $this->arrTokens = [$objNewToken->getIdentifier() => $objNewToken];
+      $this->saveTokens();
+      $this->tryActivateToken($objNewToken->getIdentifier());
+    } else {
+      $this->arrTokens = unserialize($strTokenData);
+    }
   }
 
   public function saveUsers(): void {
