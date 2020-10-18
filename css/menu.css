@@ -1,0 +1,163 @@
+/*
+    Created on : 12.09.2020, 19:20:16
+    Author     : acul
+*/
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(48,48,48);
+  color: white;
+  margin:0;
+  padding: 0;
+}
+
+#topMenu{
+  position: relative;
+  box-sizing: border-box;
+  height: 15%;
+  padding: 1vh;
+  overflow: hidden;
+  background:  rgb(24,24,24);
+}
+
+#mainLogoContainer{
+  height: 100%;
+  display:inline-block;
+}
+
+#mainLogo{
+  height: 100%;
+  width: auto;
+}
+
+#topMenuButtonContainer{
+  position:absolute;
+  top: auto;
+  bottom: 0;
+  display: inline-block;
+  padding-left: 2vh;
+}
+
+#topMenuButtonContainer ul{
+  font-size: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menuEntry{
+  display: inline-block;
+  width: 20vh;
+  position:relative;
+}
+
+.menuEntry a {
+  display:block;
+  padding: 2vh 0;
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+  text-align: center;
+  color:inherit;
+  font-size: 2vh;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  border-style: solid;
+  border-color: black;
+  border-width: 0.2vh;
+  background:  black;
+}
+
+.menuEntry:hover a {
+  color: red;
+  border-color: red;
+  padding-top: 4vh;
+}
+
+.notTopMenu{
+  display: block;
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 85%;
+}
+
+.submenu{
+  height: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 20vh;
+}
+
+.submenu:after{
+  content: "  ";
+  display: block;
+  width: 90%;
+
+  flex: 1;
+  background: rgb(32,32,32);
+}
+
+.submenu ul{
+  font-size: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width:100%;
+}
+
+.subMenuEntry {
+  margin: 0;
+  display: block;
+  position:relative;
+  width: 100%;
+}
+
+.subMenuEntry a {
+  box-sizing: border-box;
+  display:block;
+  padding: 1.5vh 0;
+  height: 100%;
+  width: 90%;
+  text-decoration: none;
+  text-align: center;
+  color:inherit;
+  font-size: 1.8vh;
+  background: rgb(32,32,32);
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  border-style: solid;
+  border-color: rgb(32,32,32);
+  border-width: 0.2vh;
+}
+
+.subMenuEntry a:hover {
+  color: red;
+  border-color: red;
+  width: 100%;
+}
+
+.content{
+  display: inline-block;
+  height: 100%;
+  width: calc(100% - 20vh);
+  position: absolute;
+  top: 0;
+}
+
+.table{
+  display: table;
+}
+
+.row{
+  display:table-row;
+}
+
+.cell{
+  display:table-cell;
+}

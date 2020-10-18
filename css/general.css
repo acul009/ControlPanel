@@ -1,0 +1,20 @@
+/*
+    Created on : 08.10.2020, 19:31:44
+    Author     : acul
+*/
+
+.button.sameSize {
+  background: black;
+  border-style: solid;
+  border-color: black;
+  border-width: 0.2vh;
+  padding: 1vh;
+  cursor: pointer;
+  transition-duration: 0.3s;
+  margin-top: 1vh;
+}
+
+.button:hover {
+  color: red;
+  border-color: red;
+}

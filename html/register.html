@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Control-Panel Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./H512.js"></script>
+    <script src="./login.js"></script>
+    <link rel="stylesheet" type="text/css" href="./login.css">
+  </head>
+  <body>
+    <div>
+      <div id="logoContainer">
+        <img id="logo" src="./logo.png" alt="logo">
+      </div>
+      <div id="loginContainer">
+        <h1>Control Panel Registration</h1>
+        <div>
+          <div>
+            <div>Username:</div>
+            <div>
+              <form id="formUserHash" action="./index.php?action=register" method="post">
+                <input id="inputUser" name="user" type="text">
+                <input id="inputHash" name="hash" type="hidden">
+              </form>
+            </div>
+          </div>
+          <div>
+            <div>Password:</div>
+            <div>
+              <input id="inputPassword" type="password">
+            </div>
+            <div>Confirm Password:</div>
+            <div>
+              <input id="confirmPassword" type="password">
+            </div>
+          </div>
+          <div>
+            <div id="buttonSubmit" data-type="register">Register</div>
+          </div>
+          <div>
+            By logging in you accept the cookie responsible for managing your session.
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,143 @@
+<?php
+
+/**
+ * Description of LibraryManager
+ *
+ * @author acul
+ */
+class LibraryManager {
+
+  private string $strWorkingDir;
+  private array $arrModuleNames;
+
+  private const PHP_DIR = 'php';
+  private const TEMPLATE_DIR = 'templates';
+  private const CSS_DIR = 'css';
+  private const JAVASCRIPT_DIR = 'javascript';
+  private const PHP_EXT = 'php';
+  private const TEMPLATE_EXT = 'html';
+  private const CSS_EXT = 'css';
+  private const JAVASCRIPT_EXT = 'js';
+  private const CSS_HEADER = 'text/css';
+  private const JAVASCRIPT_HEADER = 'text/javascript';
+
+  public function __construct() {
+    $this->updateWorkingDir();
+    $this->loadAllBaseFiles();
+    $this->indexModules();
+  }
+
+  private function updateWorkingDir(): void {
+    $this->strWorkingDir = dirname(getcwd(), 1);
+  }
+
+  private function loadAllBaseFiles(): void {
+    foreach (glob($this->strWorkingDir . "/php/*.php") as $filename) {
+      include_once $filename;
+    }
+  }
+
+  private function indexModules(): void {
+    $strModuleDir = $this->strWorkingDir . '/modules';
+
+    $this->arrModuleNames = [];
+
+    $objModuleDirectory = opendir($strModuleDir);
+
+
+    while ($objModuleName = readdir($objModuleDirectory)) {
+      if ($objModuleName != '.' && $objModuleName != '..') {
+        $this->arrModuleNames[] = $objModuleName;
+      }
+    }
+  }
+
+  public function listModules(bool $listAll = false): array {
+    $arrModuleList = [];
+    foreach ($this->arrModuleNames as $strModule) {
+      if ($listAll || Initiator::active()->Authentication()->activeUser()->mayUseModule($strModule)) {
+        $arrModuleList[] = $strModule;
+      }
+    }
+    return $arrModuleList;
+  }
+
+  public function getWorkingDir() {
+    return $this->strWorkingDir;
+  }
+
+  public function runModule(string $strModule) {
+    if (Initiator::active()->Authentication()->activeUser()->mayUseModule($strModule)) {
+      $strModuleFileName = str_replace(' ', '_', $strModule);
+      include_once self::getWorkingDir() . '/modules/' . $strModule . '/' . $strModuleFileName . '.php';
+      if (isset($_GET['page'])) {
+        echo Initiator::active()->PageBuilder()->createFinalPage($strModuleFileName::buildModuleSubPage($_REQUEST, $_GET['page']), $strModule);
+      } else {
+        echo Initiator::active()->PageBuilder()->createFinalPage($strModuleFileName::buildModuleMainPage($_REQUEST), $strModule);
+      }
+    }
+  }
+
+  public function moduleExists(string $strModuleName): bool {
+    return in_array($strModuleName, $this->arrModuleNames);
+  }
+
+  public function loadFile(string $strType, string $strName, string $strModule = null, bool $bolSetHeader = false): string {
+
+
+    switch ($strType) {
+      case 'javascript':
+        $strFileExtension = self::JAVASCRIPT_EXT;
+        $strDir = self::JAVASCRIPT_DIR;
+        $strHeader = self::JAVASCRIPT_HEADER;
+        break;
+      case 'css':
+        $strFileExtension = self::CSS_EXT;
+        $strDir = self::CSS_DIR;
+        $strHeader = self::CSS_HEADER;
+        break;
+      case 'template':
+        $strFileExtension = self::TEMPLATE_EXT;
+        $strDir = self::TEMPLATE_DIR;
+        break;
+    }
+
+    $strFilePath = $this->getWorkingDir();
+
+    $strFilePath .= $strModule != null ? '/modules/' . $strModule : '';
+
+    $strFilePath .= '/' . $strDir . '/' . $strName . '.' . $strFileExtension;
+
+    if ($bolSetHeader) {
+      $intLastMod = filemtime($strFilePath);
+      header('Content-type: ' . $strHeader);
+      header('Etag: ' . $intLastMod);
+      header('Cache-Control: private,max-age=0');
+      header_remove('Pragma');
+      if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $intLastMod) {
+        header('HTTP/1.1 304 Not Modified', true, 304);
+        $strReturn = '';
+      }
+    }
+    if (!isset($strReturn)) {
+      $strReturn = file_get_contents($strFilePath);
+      if ($strReturn === false) {
+        throw new Exception('File Not Found');
+      }
+    }
+
+    return $strReturn;
+  }
+
+  public function printFile(string $strType, string $strName, string $strModule = null): void {
+    $strHttpHeader;
+    try {
+      $strFileContent = $this->loadFile($strType, $strName, $strModule, true);
+    } catch (Exception $e) {
+      header("HTTP/1.0 404 Not Found");
+      die('Error 404');
+    }
+    echo $strFileContent;
+  }
+
+}

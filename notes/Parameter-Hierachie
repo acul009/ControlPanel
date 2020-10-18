@@ -1,0 +1,8 @@
+action:
+der action parameter steuert direkt das Hauptprogramm und steht über allen anderen parametern
+
+module:
+der module parameter weist an ein Modul zu starten, dem modul werden alle parameter mitgegeben
+
+page:
+der page parameter gibt an, welche subpage eines Moduls geladen werden soll.
