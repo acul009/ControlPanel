@@ -38,7 +38,6 @@ function genToken(target) {
     var dummy = document.createElement('div');
     dummy.innerHTML = this.responseText;
     target.parentNode.insertBefore(dummy.firstElementChild, target);
-    console.log(this.responseText);
   };
   ajax.send();
 }
