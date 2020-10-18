@@ -102,6 +102,9 @@ class AuthenticationManager {
     if ($strUserData === false) {
       $this->arrUsers = [];
       $this->saveUsers();
+      $objAdminToken = Token::createFirstAdminToken();
+      $this->arrTokens[$objAdminToken->getIdentifier()] = $objAdminToken;
+      $this->tryActivateToken($objAdminToken->getIdentifier());
     } else {
       $this->arrUsers = unserialize($strUserData);
     }
@@ -110,10 +113,8 @@ class AuthenticationManager {
   private function loadTokens(): void {
     $strTokenData = file_get_contents(Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE);
     if ($strTokenData === false) {
-      $objNewToken = Token::createFirstAdminToken();
-      $this->arrTokens = [$objNewToken->getIdentifier() => $objNewToken];
+      $this->arrTokens = [];
       $this->saveTokens();
-      $this->tryActivateToken($objNewToken->getIdentifier());
     } else {
       $this->arrTokens = unserialize($strTokenData);
     }
