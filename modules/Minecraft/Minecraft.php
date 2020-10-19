@@ -21,6 +21,8 @@ class Minecraft implements ControlPanelModule {
   }
 
   public static function buildModuleSubPage(array $arrRequestParameters, string $strSubPage): string {
+    self:: createServerDirWhenMissing();
+
     $strPageHTML = '';
     switch ($strSubPage) {
 
@@ -74,7 +76,6 @@ class Minecraft implements ControlPanelModule {
   }
 
   private static function buildNewServer(array $arrRequestParameters): string {
-    self:: createServerDirWhenMissing();
     $strServerDir = Initiator::active()->Library()->getWorkingDir() . '/modules/Minecraft/Server';
     $objServerDir = opendir($strServerDir);
     $intNumber = 1;
