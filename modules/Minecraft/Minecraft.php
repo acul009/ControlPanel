@@ -15,7 +15,7 @@ class Minecraft implements ControlPanelModule {
 
   private static TemplateFiller $objServerBlockFiller;
 
-  //put your code here
+//put your code here
   public static function buildModuleMainPage(array $arrRequestParameters): string {
     return self::buildModuleSubPage($arrRequestParameters, 'Server');
   }
@@ -74,6 +74,7 @@ class Minecraft implements ControlPanelModule {
   }
 
   private static function buildNewServer(array $arrRequestParameters): string {
+    self:: createServerDirWhenMissing();
     $strServerDir = Initiator::active()->Library()->getWorkingDir() . '/modules/Minecraft/Server';
     $objServerDir = opendir($strServerDir);
     $intNumber = 1;
@@ -113,6 +114,13 @@ class Minecraft implements ControlPanelModule {
     $objConfigTemp = New TemplateFiller('ServerConfig', 'Minecraft');
     $objConfigTemp->setSubstituteArray([]);
     return (string) $objConfigTemp;
+  }
+
+  private static function createServerDirWhenMissing(): void {
+    $strDirPath = Initiator::active()->Library()->getWorkingDir() . '/modules/Minecraft/Server';
+    if (!file_exists($strDirPath)) {
+      mkdir($strDirPath);
+    }
   }
 
 }
