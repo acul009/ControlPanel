@@ -98,24 +98,27 @@ class AuthenticationManager {
 //      $objUser = unserialize($strUserData);
 //      $this->arrUsers[$objUser->getUserName()] = $objUser;
 //    }
-    $strUserData = file_get_contents(Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE);
-    if ($strUserData === false) {
+
+    $strUserFilePath = Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE;
+    if (!file_exists($strUserFilePath)) {
       $this->arrUsers = [];
       $this->saveUsers();
       $objAdminToken = Token::createFirstAdminToken();
       $this->arrTokens[$objAdminToken->getIdentifier()] = $objAdminToken;
       $this->tryActivateToken($objAdminToken->getIdentifier());
     } else {
+      $strUserData = file_get_contents($strUserFilePath);
       $this->arrUsers = unserialize($strUserData);
     }
   }
 
   private function loadTokens(): void {
-    $strTokenData = file_get_contents(Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE);
-    if ($strTokenData === false) {
+    $strTokenFilePath = Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE;
+    if (!file_exists($strTokenFilePath)) {
       $this->arrTokens = [];
       $this->saveTokens();
     } else {
+      $strTokenData = file_get_contents();
       $this->arrTokens = unserialize($strTokenData);
     }
   }
