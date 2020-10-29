@@ -106,6 +106,7 @@ class AuthenticationManager {
       $objAdminToken = Token::createFirstAdminToken();
       $this->arrTokens[$objAdminToken->getIdentifier()] = $objAdminToken;
       $this->tryActivateToken($objAdminToken->getIdentifier());
+      session_unset();
     } else {
       $strUserData = file_get_contents($strUserFilePath);
       $this->arrUsers = unserialize($strUserData);
@@ -150,13 +151,13 @@ class AuthenticationManager {
   }
 
   private function prepare(): void {
-    $this->loadSession();
     if (!isset($this->arrUsers)) {
       $this->loadUsers();
     }
     if (!isset($this->arrTokens)) {
       $this->loadTokens();
     }
+    $this->loadSession();
   }
 
   public function listUsers(): array {
