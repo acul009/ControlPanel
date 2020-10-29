@@ -1,7 +1,7 @@
 <?php
 
 $strInitiatorPath = dirname(getcwd(), 1) . '/php/Initiator.php';
-include_once '../php/Initiator.php';
+include_once $strInitiatorPath;
 
 $objInit = new Initiator();
 

@@ -25,7 +25,7 @@ class LibraryManager {
   public function __construct() {
     $this->updateWorkingDir();
     //$this->loadAllBaseFiles();
-    spl_autoload_register($this->tryLoadClass($strClass));
+    spl_autoload_register([$this, 'tryLoadClass']);
     $this->indexModules();
   }
 
@@ -87,11 +87,18 @@ class LibraryManager {
   public function runModule(string $strModule) {
     if (Initiator::active()->Authentication()->activeUser()->mayUseModule($strModule)) {
       $strModuleFileName = str_replace(' ', '_', $strModule);
-      include_once self::getWorkingDir() . '/modules/' . $strModule . '/' . $strModuleFileName . '.php';
-      if (isset($_GET['page'])) {
-        echo Initiator::active()->PageBuilder()->createFinalPage($strModuleFileName::buildModuleSubPage($_REQUEST, $_GET['page']), $strModule);
+      $strModulePath = self::getWorkingDir() . '/modules/' . $strModule . '/';
+      $strModuleFilePath = $strModulePath . $strModuleFileName . '.php';
+      if (file_exists($strModuleFilePath)) {
+        include_once $strModuleFilePath;
+        $this->addAutoLoadLocation('/modules/' . $strModule . '/php');
+        if (isset($_GET['page'])) {
+          echo Initiator::active()->PageBuilder()->createFinalPage($strModuleFileName::buildModuleSubPage($_REQUEST, $_GET['page']), $strModule);
+        } else {
+          echo Initiator::active()->PageBuilder()->createFinalPage($strModuleFileName::buildModuleMainPage($_REQUEST), $strModule);
+        }
       } else {
-        echo Initiator::active()->PageBuilder()->createFinalPage($strModuleFileName::buildModuleMainPage($_REQUEST), $strModule);
+        throw new Exception('Module file could not be found: "' . $strModuleFilePath . '"');
       }
     }
   }
