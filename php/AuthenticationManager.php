@@ -101,7 +101,6 @@ class AuthenticationManager {
 
     $strUserFilePath = Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE;
     if (!file_exists($strUserFilePath)) {
-      echo 'emergency Fallback';
       session_unset();
       $this->arrUsers = [];
       $this->saveUsers();
@@ -117,7 +116,6 @@ class AuthenticationManager {
   private function loadTokens(): void {
     $strTokenFilePath = Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE;
     if (!file_exists($strTokenFilePath)) {
-      echo 'restoring token file';
       $this->arrTokens = [];
       $this->saveTokens();
     } else {
