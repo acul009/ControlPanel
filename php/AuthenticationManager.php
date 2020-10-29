@@ -118,7 +118,7 @@ class AuthenticationManager {
       $this->arrTokens = [];
       $this->saveTokens();
     } else {
-      $strTokenData = file_get_contents();
+      $strTokenData = file_get_contents($strTokenFilePath);
       $this->arrTokens = unserialize($strTokenData);
     }
   }
