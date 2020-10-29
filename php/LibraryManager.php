@@ -9,6 +9,7 @@ class LibraryManager {
 
   private string $strWorkingDir;
   private array $arrModuleNames;
+  private array $arrAutoloadLocations = ['/php' => true];
 
   private const PHP_DIR = 'php';
   private const TEMPLATE_DIR = 'templates';
@@ -23,7 +24,8 @@ class LibraryManager {
 
   public function __construct() {
     $this->updateWorkingDir();
-    $this->loadAllBaseFiles();
+    //$this->loadAllBaseFiles();
+    spl_autoload_register($this->tryLoadClass($strClass));
     $this->indexModules();
   }
 
@@ -32,8 +34,24 @@ class LibraryManager {
   }
 
   private function loadAllBaseFiles(): void {
-    foreach (glob($this->strWorkingDir . "/php/*.php") as $filename) {
+    foreach (glob($this->getWorkingDir() . "/php/*.php") as $filename) {
       include_once $filename;
+    }
+  }
+
+  private function tryLoadClass($strClass) {
+    foreach (array_keys($this->arrAutoloadLocations) as $strLocation) {
+      $strFilename = $this->getWorkingDir() . $strLocation . '/' . $strClass . '.php';
+      if (file_exists($strFilename)) {
+        include_once $strFilename;
+        return;
+      }
+    }
+  }
+
+  private function addAutoLoadLocation(string $strLocation) {
+    if (!isset($this->arrAutoloadLocations[$strLocation])) {
+      $this->arrAutoloadLocations[$strLocation] = true;
     }
   }
 
