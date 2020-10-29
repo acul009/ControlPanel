@@ -101,12 +101,12 @@ class AuthenticationManager {
 
     $strUserFilePath = Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE;
     if (!file_exists($strUserFilePath)) {
+      session_unset();
       $this->arrUsers = [];
       $this->saveUsers();
       $objAdminToken = Token::createFirstAdminToken();
       $this->arrTokens[$objAdminToken->getIdentifier()] = $objAdminToken;
       $this->tryActivateToken($objAdminToken->getIdentifier());
-      session_unset();
     } else {
       $strUserData = file_get_contents($strUserFilePath);
       $this->arrUsers = unserialize($strUserData);
