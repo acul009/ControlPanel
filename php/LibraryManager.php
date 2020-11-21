@@ -41,6 +41,7 @@ class LibraryManager {
 
   private function tryLoadClass($strClass) {
     foreach (array_keys($this->arrAutoloadLocations) as $strLocation) {
+      $strClass = str_replace('\\', '/', $strClass);
       $strFilename = $this->getWorkingDir() . $strLocation . '/' . $strClass . '.php';
       if (file_exists($strFilename)) {
         include_once $strFilename;

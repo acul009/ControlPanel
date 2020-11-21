@@ -15,6 +15,9 @@ class Minecraft implements ControlPanelModule {
 
   private static TemplateFiller $objServerBlockFiller;
 
+  public const SERVER_DIRECTORY = '/modules/Minecraft/data/Server';
+  public const VERSIONS_DIRECTORY = '/modules/Minecraft/data/Versions';
+
 //put your code here
   public static function buildModuleMainPage(array $arrRequestParameters): string {
     return self::buildModuleSubPage($arrRequestParameters, 'Server');
@@ -32,12 +35,17 @@ class Minecraft implements ControlPanelModule {
 
       case 'Worlds':
         $strPageHTML = self::buildWorldList($arrRequestParameters);
-
         break;
+
+      case 'Versions':
+        $strPageHTML = self::buildVersionsPage($arrRequestParameters);
+        break;
+
       case 'NewServer':
         $strPageHTML = self::buildNewServer($arrRequestParameters);
 
         break;
+
       case 'config':
         $strPageHTML = self::buildConfig($arrRequestParameters);
 
@@ -49,11 +57,15 @@ class Minecraft implements ControlPanelModule {
   }
 
   public static function listSubPages(): array {
-    return ['Server', 'Worlds'];
+    return ['Server', 'Worlds', 'Versions'];
+  }
+
+  private static function buildVersionsPage(array $arrRequestParameters): string {
+
   }
 
   private static function buildServerList(array $arrRequestParameters): string {
-    $strServerDir = Initiator::active()->Library()->getWorkingDir() . '/modules/Minecraft/Server';
+    $strServerDir = Initiator::active()->Library()->getWorkingDir() . self::SERVER_DIRECTORY;
     $objServerDir = opendir($strServerDir);
     $objPreviewTemp = new TemplateFiller('TempServerPreview', 'Minecraft');
     $strPreviewList = '';
@@ -76,7 +88,7 @@ class Minecraft implements ControlPanelModule {
   }
 
   private static function buildNewServer(array $arrRequestParameters): string {
-    $strServerDir = Initiator::active()->Library()->getWorkingDir() . '/modules/Minecraft/Server';
+    $strServerDir = Initiator::active()->Library()->getWorkingDir() . self::SERVER_DIRECTORY;
     $objServerDir = opendir($strServerDir);
     $intNumber = 1;
     $strServerPrefix = 'Server';
@@ -118,9 +130,9 @@ class Minecraft implements ControlPanelModule {
   }
 
   private static function createServerDirWhenMissing(): void {
-    $strDirPath = Initiator::active()->Library()->getWorkingDir() . '/modules/Minecraft/Server';
+    $strDirPath = Initiator::active()->Library()->getWorkingDir() . self::SERVER_DIRECTORY;
     if (!file_exists($strDirPath)) {
-      mkdir($strDirPath);
+      mkdir($strDirPath, true);
     }
   }
 
