@@ -1,0 +1,46 @@
+#serverConsoleDisplay {
+  padding: 1vh;
+  color: white;
+  background-color: rgb(64,64,64);
+  border: none;
+  height: 80%;
+  width: 100%;
+}
+
+#consoleDiv,#statusDiv{
+  color: white;
+height:90%;
+  display: inline-block;
+  margin: 2vh;
+}
+
+#consoleDiv {
+    width: 80%;
+    float: left;
+}
+
+#statusDiv{
+  float: right;
+  width: 10%;
+}
+
+#consoleInput{
+  padding: 3vh;
+  float: left;
+  margin-right: 2vh;
+  background-color: rgb(24,24,24);
+  color: inherit;
+  border: none;
+  width: 90%;
+}
+
+#consoleSendButton{
+  text-align: center;
+}
+
+#consoleInput, #consoleSendButton {
+  padding: 1vh;
+  box-sizing: border-box;
+  display: inline-block;
+  margin-top: 1vh;
+}
