@@ -67,6 +67,7 @@ class PageBuilder {
       $objCssTemplate = new TemplateFiller('cssTemplate');
       $objCssTemplate->setSubstituteArray(['file' => $strModuleFileName, 'module' => $strModule]);
       $strMeta .= $objCssTemplate;
+      $strMeta .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>';
       $objJsTemplate = new TemplateFiller('jsTemplate');
       $objJsTemplate->setSubstituteArray(['file' => $strModuleFileName, 'module' => $strModule]);
       $strMeta .= $objJsTemplate;
