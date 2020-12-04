@@ -4,14 +4,18 @@
 */
 
 .button.sameSize {
+  padding: 1vh;
+  margin-top: 1vh;
+}
+
+.button {
+  color:white;
   background: black;
   border-style: solid;
   border-color: black;
   border-width: 0.2vh;
-  padding: 1vh;
   cursor: pointer;
   transition-duration: 0.3s;
-  margin-top: 1vh;
 }
 
 .button:hover {
