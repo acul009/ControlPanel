@@ -1,0 +1,8 @@
+-Start LibraryManager
+-LibraryManager starts AuthenticationManager
+-LibraryManager creates Request-Object
+-LibraryManager reads requested Endpoint from Request
+-LibraryManager activates Module-Mode
+-Librarymanager checks Required permissions of Endpoint
+-Librarymanager asks if user has the required permissions
+-Librarymanager starts Endpoint

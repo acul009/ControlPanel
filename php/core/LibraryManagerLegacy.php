@@ -1,10 +1,9 @@
 <?php
 
-/**
- * Description of LibraryManager
- *
- * @author acul
- */
+namespace core;
+
+use Initiator;
+
 class LibraryManagerLegacy {
 
   private string $strWorkingDir;

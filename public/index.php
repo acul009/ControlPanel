@@ -77,5 +77,5 @@ if ($objInit->Authentication()->isLoggedIn()) {
     echo $objInit->PageBuilder()->getMainPage();
   }
 } else {
-  echo file_get_contents('../html/login.html');
+  header('Location: ./login.html');
 }

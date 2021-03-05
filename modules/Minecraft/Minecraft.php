@@ -11,7 +11,7 @@
  *
  * @author timon
  */
-class Minecraft implements ControlPanelModule {
+class Minecraft implements ControlPanelModuleInterface {
 
   private static TemplateFiller $objServerBlockFiller;
 

@@ -1,13 +1,11 @@
 <?php
 
-include_once '../php/LibraryManager.php';
-include_once '../php/AuthenticationManager.php';
+include_once '../php/core/LibraryManager.php';
 
-/**
- * Description of Initiator
- *
- * @author acul
- */
+use core\AuthenticationManager;
+use core\LibraryManager;
+use gui\PageBuilder;
+
 class Initiator {
 
   private LibraryManager $objLibrary;

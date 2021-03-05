@@ -5,7 +5,7 @@
  *
  * @author acul
  */
-class Admin_Panel implements ControlPanelModule {
+class Admin_Panel implements ControlPanelModuleInterface {
 
   private const SUB_PAGES = ['Users', 'Tokens'];
 
@@ -83,7 +83,7 @@ class Admin_Panel implements ControlPanelModule {
   private static function buildPermissionEditItem(PermissionEntity $objEntity, TemplateFiller $objPermissionHtml, TemplateFiller $objUserHtml): string {
     $strPermissions = '';
 
-    foreach (Initiator::active()->Library()->listModules(true) as $strModule) {
+    foreach (Initiator::active()->Library()->listModules() as $strModule) {
       $objPermissionHtml->setSubstituteArray([
           'permission' => $strModule,
           'checked' => $objEntity->hasPersmission($strModule) ? 'checked' : ''

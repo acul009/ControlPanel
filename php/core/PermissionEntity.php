@@ -1,10 +1,7 @@
 <?php
 
-/**
- * Description of PermissionEntity
- *
- * @author acul
- */
+namespace core;
+
 abstract class PermissionEntity {
 
   private string $strIdentifier;

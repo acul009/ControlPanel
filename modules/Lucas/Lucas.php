@@ -11,7 +11,7 @@
  *
  * @author acul
  */
-class Lucas implements ControlPanelModule {
+class Lucas implements ControlPanelModuleInterface {
 
   private const SESSION_NAME = 'Lucas';
 

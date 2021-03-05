@@ -1,10 +1,7 @@
 <?php
 
-/**
- * Description of User
- *
- * @author acul
- */
+namespace core;
+
 class Token extends PermissionEntity {
 
   function __construct(string $strIdent = null) {

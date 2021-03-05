@@ -1,10 +1,7 @@
 <?php
 
-/**
- * Description of User
- *
- * @author acul
- */
+namespace core;
+
 class User extends PermissionEntity {
 
   private string $strPasswordHash;

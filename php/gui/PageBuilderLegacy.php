@@ -1,10 +1,10 @@
 <?php
 
-/**
- * Description of PageBuilder
- *
- * @author acul
- */
+namespace gui;
+
+use Initiator;
+use utils\TemplateFiller;
+
 class PageBuilderLegacy {
 
   private string $strMainTemplate;
@@ -21,7 +21,7 @@ class PageBuilderLegacy {
   public function buildMainTemplate(): void {
     $strMenuEntries = '';
 
-    $arrAllowedModules = Initiator::active()->Library()->listModules();
+    $arrAllowedModules = Initiator::active()->Authentication()->getAllowedModules();
     $objListEntryBuilder = new TemplateFiller('MenuEntryTemplate');
 
     foreach ($arrAllowedModules as $strModule) {

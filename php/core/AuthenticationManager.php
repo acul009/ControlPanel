@@ -1,10 +1,9 @@
 <?php
 
-/**
- * Description of newPHPClass
- *
- * @author acul
- */
+namespace core;
+
+use Initiator;
+
 class AuthenticationManager {
 
   private const ACCOUNT_FILE = 'users.txt';
@@ -17,12 +16,6 @@ class AuthenticationManager {
 
   public function __construct() {
     $this->prepare();
-    if (isset($_SESSION['user'])) {
-      $strUserName = $_SESSION['user'];
-      if ($this->userExists($strUserName)) {
-        $this->objActiveUser = $this->getUserByName($strUserName);
-      }
-    }
   }
 
   public function __destruct() {
@@ -31,8 +24,23 @@ class AuthenticationManager {
     }
   }
 
-  public function activeUser(): User {
+  public function getActiveUser(): User {
     return $this->objActiveUser;
+  }
+
+  public function getAvailablePermissions(): array {
+    return\Initiator::active()->Library()->listModules();
+  }
+
+  public function getAllowedModules() {
+    $arrAvailableModuleList = \Initiator::active()->Library()->listModules();
+    $arrAllowedModuleList = [];
+    foreach ($arrAvailableModuleList as $strModule) {
+      if (Initiator::active()->Authentication()->activeUser()->mayUseModule($strModule)) {
+        $arrAllowedModuleList[] = $strModule;
+      }
+    }
+    return $arrAllowedModuleList;
   }
 
   public function tryLogin(string $strUser, string $strPassword): void {
@@ -44,15 +52,13 @@ class AuthenticationManager {
       //echo'<br>User found: ' . $strUser;
       $objUser = $this->getUserByName($strUser);
       if ($objUser->verifyPassword($strPassword)) {
-        $this->setCurrentUser($objUser);
+        $this->setActiveUser($objUser);
         //echo '<br>Current User:';
         return;
       } else {
         //echo '<br>Password incorrect';
       }
     }
-//    $this->arrUsers = ['acul' => new User('acul', $strPassword)];
-//    $this->saveUsers();
     $this->logout();
   }
 
@@ -81,7 +87,7 @@ class AuthenticationManager {
     return false;
   }
 
-  private function setCurrentUser(User $objUser): void {
+  private function setActiveUser(User $objUser): void {
     $this->objActiveUser = $objUser;
     session_regenerate_id(true);
     $this->updateLastActive();
@@ -99,7 +105,7 @@ class AuthenticationManager {
 //      $this->arrUsers[$objUser->getUserName()] = $objUser;
 //    }
 
-    $strUserFilePath = Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE;
+    $strUserFilePath = \Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE;
     if (!file_exists($strUserFilePath)) {
       session_unset();
       $this->arrUsers = [];
@@ -114,7 +120,7 @@ class AuthenticationManager {
   }
 
   private function loadTokens(): void {
-    $strTokenFilePath = Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE;
+    $strTokenFilePath = \Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE;
     if (!file_exists($strTokenFilePath)) {
       $this->arrTokens = [];
       $this->saveTokens();
@@ -126,13 +132,13 @@ class AuthenticationManager {
 
   public function saveUsers(): void {
     if (isset($this->arrUsers)) {
-      file_put_contents(Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE, serialize($this->arrUsers));
+      file_put_contents(\Initiator::active()->Library()->getWorkingDir() . '/config/' . static::ACCOUNT_FILE, serialize($this->arrUsers));
     }
   }
 
   public function saveTokens(): void {
     if (isset($this->arrTokens)) {
-      file_put_contents(Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE, serialize($this->arrTokens));
+      file_put_contents(\Initiator::active()->Library()->getWorkingDir() . '/config/' . static::TOKEN_FILE, serialize($this->arrTokens));
     }
   }
 
@@ -151,7 +157,6 @@ class AuthenticationManager {
   }
 
   private function prepare(): void {
-    $this->loadSession();
     if (!isset($this->arrUsers)) {
       $this->loadUsers();
     }

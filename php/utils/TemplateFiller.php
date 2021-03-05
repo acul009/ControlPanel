@@ -1,10 +1,9 @@
 <?php
 
-/**
- * Description of TemplateManager
- *
- * @author acul
- */
+namespace utils;
+
+use Initiator;
+
 class TemplateFiller {
 
   private string $strTemplate;
@@ -13,12 +12,17 @@ class TemplateFiller {
   private const BRACKET_OPEN = '{';
   private const BRACKET_CLOSED = '}';
 
-  public function __construct(string $strTemplateName, string $strModule = '') {
-    $this->loadTemplate($strTemplateName, $strModule);
+  public function __construct(string $strTemplate) {
+    $this->loadTemplate($strTemplate);
   }
 
-  private function loadTemplate(string $strTemplateName, string $strModule = null): void {
-    $this->strTemplate = Initiator::active()->Library()->loadFile('template', $strTemplateName, $strModule);
+  public static function loadFromFile(string $strFilename, string $strModule = ''): self {
+    $strFilePath = \Initiator::active()->Library()->getWorkingDir() . '/templates/' . $strFilename . '.html';
+    return new self(file_get_contents($strFilePath));
+  }
+
+  private function loadTemplate(string $strTemplate): void {
+    $this->strTemplate = $strTemplate;
     $this->arrSubstitute = [];
 
     $intBracketOpenPos = strpos($this->strTemplate, self::BRACKET_OPEN);

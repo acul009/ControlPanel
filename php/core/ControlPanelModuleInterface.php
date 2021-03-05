@@ -1,10 +1,8 @@
 <?php
 
-/**
- *
- * @author acul
- */
-interface ControlPanelModule {
+namespace core;
+
+interface ControlPanelModuleInterface {
 
   public static function buildModuleMainPage(array $arrRequestParameters): string;
 
