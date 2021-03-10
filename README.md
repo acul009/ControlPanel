@@ -11,3 +11,5 @@ Planned Plugins are:
 - Minecraft Server manager
 - Factorio Server Manager
 - Webdav Module
+
+I'm also searching for a code-buddy. Programming alone can be a bit boring.
