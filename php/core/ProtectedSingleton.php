@@ -3,7 +3,9 @@
 namespace core;
 
 /**
- * Description of ProtectedSingleton
+ * The ProtectedSingleton is a parent class for singleton objects which should
+ * be protected against other instances. This is important for security and consistency.
+ * I'm still not sure how to actually deal with inheritance though...
  *
  * @author acul
  */
@@ -15,6 +17,11 @@ abstract class ProtectedSingleton {
 
   }
 
+  /**
+   * This function is used to initialize the object.
+   * all arguments from create() are passed on.
+   * <br><b>To make this implementation effective, the child class has to declare this method final!</b>
+   */
   abstract protected function init(): void;
 
   public static final function create(): self {
