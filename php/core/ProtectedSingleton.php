@@ -3,10 +3,11 @@
 namespace core;
 
 /**
+ * <pre>
  * The ProtectedSingleton is a parent class for singleton objects which should
  * be protected against other instances. This is important for security and consistency.
  * I'm still not sure how to actually deal with inheritance though...
- *
+ * </pre>
  * @author acul
  */
 abstract class ProtectedSingleton {
