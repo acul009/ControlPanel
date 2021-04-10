@@ -2,7 +2,6 @@
 
 namespace core\drivers;
 
-use core\storage\Saveable;
 use core\storage\SaveableFilesystemDriver;
 
 /**
@@ -10,6 +9,6 @@ use core\storage\SaveableFilesystemDriver;
  *
  * @author acul
  */
-abstract class SaveableDriver extends SaveableFilesystemDriver implements Saveable {
+abstract class SaveableDriver extends SaveableFilesystemDriver {
 
 }

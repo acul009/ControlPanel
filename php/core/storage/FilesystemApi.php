@@ -2,7 +2,7 @@
 
 namespace core\storage;
 
-use \core\ProtectedSingleton;
+use \core\security\ProtectedSingleton;
 use \core\LibraryManager2;
 
 /**

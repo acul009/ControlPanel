@@ -3,6 +3,8 @@
 namespace core;
 
 use core\security\SecureLoader;
+use core\storage\SaveableBase;
+use core\security\ProtectedSingleton;
 
 /**
  * TODO:
@@ -26,6 +28,7 @@ class LibraryManager2 extends ProtectedSingleton {
 
   protected function init(): void {
     $this->updateWorkingDir();
+    SaveableBase::initSaveableCache();
   }
 
   private function updateWorkingDir(): void {
@@ -47,12 +50,6 @@ class LibraryManager2 extends ProtectedSingleton {
   private function registerCustomLoader() {
     $this->secLoader = SecureLoader::create($this->getModuleDir(), $pMan);
     spl_autoload_register([$this->secLoader, 'load']);
-  }
-
-  private function indexModules(): void {
-    /*
-     * TODO
-     */
   }
 
 }

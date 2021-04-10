@@ -1,18 +1,26 @@
 <?php
 
-namespace core;
+namespace core\security;
+
+use core\security\exceptions\ProtectedSingletonException;
 
 /**
  * <pre>
  * The ProtectedSingleton is a parent class for singleton objects which should
  * be protected against other instances. This is important for security and consistency.
  * I'm still not sure how to actually deal with inheritance though...
+ * Update: I could deal with inheritance be checking if the direct parent class is this.
+ *          This would rule out inheritance completly though
  * </pre>
  * @author acul
  */
 abstract class ProtectedSingleton {
 
-  private static bool $created = false;
+  /**
+   * Set of already created Signletons
+   * @var array
+   */
+  private static array $created = [];
 
   protected final function __construct() {
 
@@ -26,14 +34,18 @@ abstract class ProtectedSingleton {
   abstract protected function init(): void;
 
   public static final function create(): self {
-    if (self::$created) {
+    if (self::alreadyCreated()) {
       throw new ProtectedSingletonException();
     }
-    self::$created = true;
+    self::$created[static::class] = true;
     $args = func_get_args();
-    $instance = new static(...$args);
-    $instance->init();
+    $instance = new static();
+    $instance->init(...$args);
     return $instance;
+  }
+
+  public static final function alreadyCreated(): bool {
+    return isset(self::$created[static::class]);
   }
 
 }

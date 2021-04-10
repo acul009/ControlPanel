@@ -3,7 +3,7 @@
 namespace core\security;
 
 use core\permissions\PermissionManager;
-use core\ProtectedSingleton;
+use core\security\ProtectedSingleton;
 
 /**
  * This class provides a way to load php files based on permissions.
