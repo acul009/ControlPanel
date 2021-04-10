@@ -31,12 +31,11 @@ abstract class SaveableFilesystemDriver extends SaveableBase implements Serializ
   public function save(int $id = null): int {
     $this->isSaveTarget = true;
     $serialized = serialize($this);
-
-    print_r($object);
     /*
      * TODO
      */
     $this->isSaveTarget = false;
+    return $this->getId();
   }
 
   public static function loadFromIdFromDatabase(int $id): static {
