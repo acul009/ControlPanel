@@ -11,10 +11,12 @@ use core\storage\exceptions\DirtySavableException;
  *
  * @author acul
  */
-abstract class SaveableFilesystemDriver extends SaveableBase implements Serializable {
+abstract class SaveableFilesystemDriver extends SaveableBase {
 
-  private const ID_PREFIX = 'ID:';
-  private const DATA_PREFIX = 'DATA:';
+  private const SAVE_TYPE_ID = 0;
+  private const SAVE_TYPE_DATA = 1;
+  private const SAVE_KEY_TYPE = 0;
+  private const SAVE_KEY_DATA = 1;
 
   private int $id;
   private bool $isSaveTarget = false;
@@ -52,48 +54,49 @@ abstract class SaveableFilesystemDriver extends SaveableBase implements Serializ
     return static::class;
   }
 
-  public function serialize(): string {
+  public function __serialize(): array {
+    $arrData = [];
     if (!$this->isSaveTarget) {
-      return self::ID_PREFIX . $this->getId();
+      $arrData[self::SAVE_KEY_TYPE] = self::SAVE_TYPE_ID;
+      $arrData[self::SAVE_KEY_DATA] = $this->getId();
+    } else {
+      if ($this->isDirty) {
+        throw new DirtySavableException();
+      }
+      $closure = \Closure::bind(function () {
+                return get_object_vars($this);
+              }, $this, static::class);
+      $arrData[self::SAVE_KEY_TYPE] = self::SAVE_TYPE_DATA;
+      $arrData[self::SAVE_KEY_DATA] = $closure();
     }
-    if ($this->isDirty) {
-      throw new DirtySavableException();
-    }
-    $closure = \Closure::bind(function () {
-              return get_object_vars($this);
-            }, $this, static::class);
-    return self::DATA_PREFIX . serialize($closure());
-    /*
-     * TODO
-     */
+    return $arrData;
   }
 
-  public function unserialize(string $serialized): void {
-    print_r('<br><br>Raw Data:<br>' . $serialized);
-    if (StringTools::startsWith($serialized, self::ID_PREFIX)) {
-      $this->id = intval(substr($serialized, strlen(self::ID_PREFIX)));
+  public function __unserialize(array $data): void {
+    if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_DATA) {
+      $this->loadDataFromArray($data[self::SAVE_KEY_DATA]);
+    } else if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_ID) {
+      $this->id = $data[self::SAVE_KEY_DATA];
       $this->isDirty = true;
-      return;
+    } else {
+      /*
+       * TODO
+       */
+      throw new \Exception();
     }
-    if (StringTools::startsWith($serialized, self::DATA_PREFIX)) {
-      $this->loadDataFromSerializedString(substr($serialized, strlen(self::DATA_PREFIX)));
-      return;
-    }
-    /*
-     * TODO
-     */
-    throw new \Exception();
   }
 
-  protected function loadDataFromSerializedString(string $serialized): void {
-    $objectVars = unserialize($serialized);
-    var_dump($objectVars);
-    $closure = \Closure::bind(function (array $objectVars) {
-              foreach ($objectVars as $key => &$value) {
+  protected function loadDataFromArray(array $data): void {
+    /*
+     * Pass by reference is extremly important here!
+     * Without it references will get lost during unserialization
+     */
+    $closure = \Closure::bind(function (array $data) {
+              foreach ($data as $key => &$value) {
                 $this->$key = &$value;
               }
             }, $this, static::class);
-    $closure($objectVars);
+    $closure($data);
   }
 
 }
