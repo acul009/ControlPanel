@@ -20,4 +20,8 @@ abstract class SaveableObject extends SaveableDriver {
     throw new RestrictedFunctionException();
   }
 
+  protected function setId(int $id): void {
+    throw new RestrictedFunctionException();
+  }
+
 }

@@ -18,19 +18,10 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
   private const SAVE_KEY_TYPE = 0;
   private const SAVE_KEY_DATA = 1;
 
-  private int $id;
   private bool $isSaveTarget = false;
   private bool $isDirty = false;
 
-  public function getId(): int {
-    return $this->id;
-  }
-
-  private function setId(int $id): void {
-    $this->id = $id;
-  }
-
-  public function save(int $id = null): int {
+  public function saveToDatabase(): int {
     $this->isSaveTarget = true;
     $serialized = serialize($this);
     /*

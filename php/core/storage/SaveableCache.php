@@ -17,7 +17,7 @@ class SaveableCache extends ProtectedSingleton {
   private array $reflectionCache = [];
 
   public function load(string $class, int $id): SaveableObject {
-    $reflection = $this->getSavableReflection($class);
+    $this->createMissingArrays($class);
     if (!isset($instanceCache[$class])) {
       $instanceCache[$class] = [];
     }
@@ -26,6 +26,21 @@ class SaveableCache extends ProtectedSingleton {
       $instanceCache[$class][$id] = new WeakRef($saveable);
     }
     return $saveable;
+  }
+
+  public function addSaveable(SaveableObject $saveable) {
+    $class = get_class($saveable);
+    $this->createMissingArrays($class);
+    $reflection = $this->getSavableReflection($class);
+    $id = $saveable->getId();
+    $instanceCache[$class][$id] = new WeakRef($saveable);
+  }
+
+  private function createMissingArrays(string $class): void {
+    $reflection = $this->getSavableReflection($class);
+    if (!isset($instanceCache[$class])) {
+      $instanceCache[$class] = [];
+    }
   }
 
   public function getSavableReflection(string $class): ReflectionClass {
