@@ -25,28 +25,37 @@ class FilesystemApi extends ProtectedSingleton {
   }
 
   public function isPathAllowed(string $path): bool {
-    return strpos($path, '..') === false;
+    return isset($this->getFullPath($path, false)[0]);
   }
 
-  public function throwExceptionIfPathNotAllowed(string $path) {
-    if (!$this->isPathAllowed($path)) {
-      throw new InvalidPathException($path);
-    }
-  }
-
-  private function getFullPath(string $path): string {
-    $this->throwExceptionIfPathNotAllowed($path);
+  private function getFullPath(string $path, bool $throwExeption): string {
     /*
      * TODO: load the currently active module from somewhere
      */
     $module = '';
     $dataDir = $this->lib->getDataDir();
-    throw new Exception('Not implemented yet');
-    return $dataDir . '/' . $module . ($path[0] === '/' ? '' : '/') . $path;
+    $pathPrefix = $dataDir . '/' . $module;
+    $relativePath = $pathPrefix . ($path[0] === '/' ? '' : '/') . $path;
+    $realPath = realpath($relativePath);
+    if (str_starts_with($realPath, $pathPrefix)) {
+      return $realPath;
+    }
+    if ($throwExeption) {
+      throw new InvalidPathException($path);
+    }
+    return '';
   }
 
-  public function file_get_contents(string $filename, bool $use_include_path = false, resource $context = null, int $offset = 0, int $maxlen = null): string|false {
+  public function file_get_contents(string $filename, bool $use_include_path = false, $context = null, int $offset = 0, int $maxlen = null): string|false {
     return file_get_contents($this->getFullPath($filename), $use_include_path, $context, $offset, $maxlen);
+  }
+
+  public function file_put_contents(string $filename, mixed $data, int $flags = 0, $context = null) {
+    file_put_contents($this->getFullPath($filename), $data, $flags, $context);
+  }
+
+  public function mkdir(string $pathname, int $mode, bool $recursive, $context = null) {
+    mkdir($this->getFullPath($pathname), $mode, $recursive, $context);
   }
 
 }
