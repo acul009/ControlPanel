@@ -17,16 +17,24 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
   private const SAVE_TYPE_DATA = 1;
   private const SAVE_KEY_TYPE = 0;
   private const SAVE_KEY_DATA = 1;
+  private const STORAGE_SUBFOLDER = 'storage';
+  private const DATA_SUBFOLDER = 'data';
+  private const ID_FILE = 'id.txt';
 
   private bool $isSaveTarget = false;
   private bool $isDirty = false;
+  private static FilesystemApi $fs;
 
   public function saveToDatabase(): int {
+    $fs = self::$fs;
     $this->isSaveTarget = true;
     $serialized = serialize($this);
-    /*
-     * TODO
-     */
+    $path = self::getSaveLocation($this->getId());
+    $dir = dirname($path);
+    if (!$fs->file_exists($dir)) {
+      $fs->mkdir($dir, 0777, true);
+    }
+    $fs->file_put_contents($path, $serialized);
     $this->isSaveTarget = false;
     return $this->getId();
   }
@@ -37,11 +45,21 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
      */
   }
 
+  private static function getSaveLocation(int $id): string {
+    $idString = str_pad((string) $id, 64, '0', STR_PAD_LEFT);
+    $splitId = str_split($idString, 3);
+    return '/' . self::STORAGE_SUBFOLDER . '/' . $this->getTypename() . '/' . self::DATA_SUBFOLDER . '/' . implode('/', $splitId) . '.txt';
+  }
+
+  public static function initDriver(\core\ApiProvider $api): void {
+    $this->fs = $api->fs();
+  }
+
   public static function init(): static {
     return static::loadFromId($this->getId());
   }
 
-  protected function getTypename(): string {
+  private static function getTypename(): string {
     return static::class;
   }
 

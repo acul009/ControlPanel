@@ -4,6 +4,7 @@ namespace core;
 
 use core\storage\FilesystemApi;
 use core\LibraryManager2;
+use core\security\ProtectedSingleton;
 
 /**
  * The ApiProvider supplies others with the neccesary api access.
@@ -15,7 +16,7 @@ class ApiProvider extends ProtectedSingleton {
   private FilesystemApi $filesystem;
 
   protected function init(LibraryManager2 $lib): void {
-    $this->filesystem = FilesystemApi::create();
+    $this->filesystem = FilesystemApi::create($lib);
   }
 
   public function fs(): FilesystemApi {

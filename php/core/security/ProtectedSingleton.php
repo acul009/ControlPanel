@@ -33,7 +33,7 @@ abstract class ProtectedSingleton {
    */
   abstract protected function init(): void;
 
-  public static final function create(): self {
+  public static final function create(): static {
     if (self::alreadyCreated()) {
       throw new ProtectedSingletonException();
     }

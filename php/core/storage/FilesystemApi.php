@@ -28,7 +28,7 @@ class FilesystemApi extends ProtectedSingleton {
     return isset($this->getFullPath($path, false)[0]);
   }
 
-  private function getFullPath(string $path, bool $throwExeption): string {
+  private function getFullPath(string $path, bool $throwExeption = true): string {
     /*
      * TODO: load the currently active module from somewhere
      */
@@ -54,8 +54,12 @@ class FilesystemApi extends ProtectedSingleton {
     file_put_contents($this->getFullPath($filename), $data, $flags, $context);
   }
 
-  public function mkdir(string $pathname, int $mode, bool $recursive, $context = null) {
+  public function mkdir(string $pathname, int $mode = 0777, bool $recursive = false, $context = null) {
     mkdir($this->getFullPath($pathname), $mode, $recursive, $context);
+  }
+
+  public function file_exists(string $filename) {
+    return file_exists($this->getFullPath($filename));
   }
 
 }

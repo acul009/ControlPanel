@@ -4,6 +4,7 @@ namespace core;
 
 use core\security\SecureLoader;
 use core\storage\SaveableBase;
+use core\drivers\SaveableDriver;
 use core\security\ProtectedSingleton;
 
 /**
@@ -24,11 +25,14 @@ class LibraryManager2 extends ProtectedSingleton {
   private const GLOBAL_FUNCTIONS_FILE = 'functions.php';
 
   private SecureLoader $secLoader;
+  private ApiProvider $api;
   private string $workingDir;
 
   protected function init(): void {
     $this->updateWorkingDir();
     SaveableBase::initSaveableCache();
+    $this->api = ApiProvider::create($this);
+    SaveableDriver::initDriver($this->api);
   }
 
   private function updateWorkingDir(): void {

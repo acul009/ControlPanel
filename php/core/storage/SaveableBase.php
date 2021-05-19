@@ -3,6 +3,7 @@
 namespace core\storage;
 
 use core\security\exceptions\RestrictedFunctionException;
+use core\ApiProvider;
 use ReflectionClass;
 
 /**
@@ -38,6 +39,8 @@ abstract class SaveableBase {
   protected static function getCurrentSavableReflection(): ReflectionClass {
     return self::$cache->getSavableReflection(static::class);
   }
+
+  public abstract static function initDriver(ApiProvider $api): void;
 
   public static final function initSaveableCache(): void {
     if (!isset(self::$cache)) {
