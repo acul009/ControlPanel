@@ -14,14 +14,16 @@ use ReflectionClass;
 abstract class SaveableBase {
 
   private static SaveableCache $cache;
-  private int $id;
+  private int $id = -1;
 
   public static abstract function loadFromIdFromDatabase(int $id): static;
 
   public abstract function saveToDatabase(): int;
 
   public function save(): int {
+    $id = $this->saveToDatabase();
     self::$cache->addSaveable($this);
+    return $id;
   }
 
   public function getId(): int {
