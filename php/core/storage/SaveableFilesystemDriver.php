@@ -5,6 +5,7 @@ namespace core\storage;
 use \utils\StringTools;
 use \Serializable;
 use core\storage\exceptions\DirtySavableException;
+use core\storage\exceptions\UnknownIdException;
 
 /**
  * Description of SaveableFilesystemDriver
@@ -15,11 +16,12 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
 
   private const SAVE_TYPE_ID = 0;
   private const SAVE_TYPE_DATA = 1;
-  private const SAVE_KEY_TYPE = 0;
-  private const SAVE_KEY_DATA = 1;
+  private const SAVE_KEY_TYPE = 1;
+  private const SAVE_KEY_DATA = 2;
+  private const SAVE_KEY_ID = 0;
   private const STORAGE_SUBFOLDER = 'storage';
   private const DATA_SUBFOLDER = 'data';
-  private const ID_FILE = 'id.txt';
+  private const ID_FILE = 'id.bin';
 
   private bool $isSaveTarget = false;
   private bool $isDirty = false;
@@ -28,31 +30,91 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
   public function saveToDatabase(): int {
     $fs = self::$fs;
     $this->isSaveTarget = true;
-    $serialized = serialize($this);
+    $dir = self::getSavePrefix();
+    if (!$fs->file_exists($dir)) {
+      $fs->mkdir($dir, 0777, true);
+    }
+    if ($this->getId() < 0) {
+      $this->setId(self::generateId());
+    }
     $path = self::getSaveLocation($this->getId());
     $dir = dirname($path);
     if (!$fs->file_exists($dir)) {
       $fs->mkdir($dir, 0777, true);
     }
-    $fs->file_put_contents($path, $serialized);
+    $serialized = serialize($this);
+    $file = $fs->fopen($path, 'w');
+    flock($file, LOCK_EX);
+    fwrite($file, $serialized);
+    fflush($file);
+    flock($file, LOCK_UN);
+    fclose($file);
     $this->isSaveTarget = false;
     return $this->getId();
   }
 
+  private static function generateId() {
+    $fs = self::$fs;
+    $filename = self::getSavePrefix() . self::ID_FILE;
+    $id = 0;
+    $file = $fs->fopen($filename, 'c+b');
+    flock($file, LOCK_EX);
+    $byteArray = fread($file, 8);
+    if ($byteArray) {
+      for ($i = 0; $i < strlen($byteArray); $i++) {
+        $byte = $byteArray[$i];
+        $id = ($id << 8) + ord($byte);
+      }
+      $id++;
+    }
+    $byteArray = '';
+    for ($i = 0; $i < 8; $i++) {
+      $byte = ($id >> (8 * $i)) & 0b11111111;
+      $byteArray = chr($byte) . $byteArray;
+    }
+    for ($i = 0; $i < strlen($byteArray); $i++) {
+      $byte = $byteArray[$i];
+    }
+    ftruncate($file, 0);
+    rewind($file);
+    fwrite($file, $byteArray);
+    fflush($file);
+    flock($file, LOCK_UN);
+    fclose($file);
+    return $id;
+  }
+
   public static function loadFromIdFromDatabase(int $id): static {
-    /*
-     * TODO
-     */
+    $fs = self::$fs;
+    $path = self::getSaveLocation($id);
+    if (!$fs->file_exists($path)) {
+      throw new UnknownIdException($id);
+    }
+    $file = $fs->fopen($path, 'r');
+    flock($file, LOCK_EX);
+    $serialzed = stream_get_contents($file);
+    flock($file, LOCK_UN);
+    fclose($file);
+    return unserialize($serialzed);
   }
 
   private static function getSaveLocation(int $id): string {
-    $idString = str_pad((string) $id, 64, '0', STR_PAD_LEFT);
+    $idString = str_pad((string) $id, 21, '0', STR_PAD_LEFT);
     $splitId = str_split($idString, 3);
-    return '/' . self::STORAGE_SUBFOLDER . '/' . $this->getTypename() . '/' . self::DATA_SUBFOLDER . '/' . implode('/', $splitId) . '.txt';
+    return self::getSavePrefix() . self::DATA_SUBFOLDER . '/' . implode('/', $splitId) . '.txt';
+  }
+
+  private static function getSavePrefix(): string {
+    static $cache = [];
+    $type = self::getTypename();
+    if (!isset($cache[$type])) {
+      $cache[$type] = '/' . self::STORAGE_SUBFOLDER . '/' . self::getTypename() . '/';
+    }
+    return $cache[$type];
   }
 
   public static function initDriver(\core\ApiProvider $api): void {
-    $this->fs = $api->fs();
+    self::$fs = $api->fs();
   }
 
   public static function init(): static {
@@ -60,14 +122,14 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
   }
 
   private static function getTypename(): string {
-    return static::class;
+    return str_replace('\\', '/', static::class);
   }
 
   public function __serialize(): array {
     $arrData = [];
+    $arrData[self::SAVE_KEY_ID] = $this->getId();
     if (!$this->isSaveTarget) {
       $arrData[self::SAVE_KEY_TYPE] = self::SAVE_TYPE_ID;
-      $arrData[self::SAVE_KEY_DATA] = $this->getId();
     } else {
       if ($this->isDirty) {
         throw new DirtySavableException();
@@ -82,10 +144,10 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
   }
 
   public function __unserialize(array $data): void {
+    $this->setId($data[self::SAVE_KEY_ID]);
     if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_DATA) {
       $this->loadDataFromArray($data[self::SAVE_KEY_DATA]);
     } else if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_ID) {
-      $this->id = $data[self::SAVE_KEY_DATA];
       $this->isDirty = true;
     } else {
       /*
