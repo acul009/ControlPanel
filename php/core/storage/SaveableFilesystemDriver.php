@@ -34,10 +34,10 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
     if (!$fs->file_exists($dir)) {
       $fs->mkdir($dir, 0777, true);
     }
-    if ($this->getId() < 0) {
-      $this->setId(self::generateId());
+    if (parent::getId() < 0) {
+      parent::setId(self::generateId());
     }
-    $path = self::getSaveLocation($this->getId());
+    $path = self::getSaveLocation(parent::getId());
     $dir = dirname($path);
     if (!$fs->file_exists($dir)) {
       $fs->mkdir($dir, 0777, true);
@@ -50,7 +50,7 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
     flock($file, LOCK_UN);
     fclose($file);
     $this->isSaveTarget = false;
-    return $this->getId();
+    return parent::getId();
   }
 
   private static function generateId() {
@@ -118,7 +118,7 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
   }
 
   public static function init(): static {
-    return static::loadFromId($this->getId());
+    return static::loadFromId(parent::getId());
   }
 
   private static function getTypename(): string {
@@ -127,7 +127,7 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
 
   public function __serialize(): array {
     $arrData = [];
-    $arrData[self::SAVE_KEY_ID] = $this->getId();
+    $arrData[self::SAVE_KEY_ID] = parent::getId();
     if (!$this->isSaveTarget) {
       $arrData[self::SAVE_KEY_TYPE] = self::SAVE_TYPE_ID;
     } else {
@@ -144,7 +144,7 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
   }
 
   public function __unserialize(array $data): void {
-    $this->setId($data[self::SAVE_KEY_ID]);
+    parent::setId($data[self::SAVE_KEY_ID]);
     if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_DATA) {
       $this->loadDataFromArray($data[self::SAVE_KEY_DATA]);
     } else if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_ID) {
