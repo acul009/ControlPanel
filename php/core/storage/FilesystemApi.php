@@ -4,6 +4,7 @@ namespace core\storage;
 
 use \core\security\ProtectedSingleton;
 use \core\LibraryManager2;
+use core\storage\exceptions\InvalidPathException;
 
 /**
  * <pre>
@@ -20,7 +21,7 @@ class FilesystemApi extends ProtectedSingleton {
 
   private LibraryManager2 $lib;
 
-  protected function init(LibraryManager2 $lib): void {
+  protected function init(LibraryManager2 $lib = null): void {
     $this->lib = $lib;
   }
 
@@ -29,15 +30,10 @@ class FilesystemApi extends ProtectedSingleton {
   }
 
   private function getFullPath(string $path, bool $throwExeption = true): string {
-    /*
-     * TODO: load the currently active module from somewhere
-     */
-    $module = '';
     $dataDir = $this->lib->getDataDir();
-    $pathPrefix = $dataDir . '/' . $module;
-    $relativePath = $pathPrefix . ($path[0] === '/' ? '' : '/') . $path;
-    $realPath = realpath($relativePath);
-    if (str_starts_with($realPath, $pathPrefix)) {
+    $relativePath = $dataDir . ($path[0] === '/' ? '' : '/') . $path;
+    $realPath = $this->realpath($relativePath);
+    if (str_starts_with($realPath, $dataDir)) {
       return $realPath;
     }
     if ($throwExeption) {
@@ -46,20 +42,31 @@ class FilesystemApi extends ProtectedSingleton {
     return '';
   }
 
+  public function realpath(string $path): string {
+    /*
+     * TODO
+     */
+    return $path;
+  }
+
   public function file_get_contents(string $filename, bool $use_include_path = false, $context = null, int $offset = 0, int $maxlen = null): string|false {
     return file_get_contents($this->getFullPath($filename), $use_include_path, $context, $offset, $maxlen);
   }
 
-  public function file_put_contents(string $filename, mixed $data, int $flags = 0, $context = null) {
-    file_put_contents($this->getFullPath($filename), $data, $flags, $context);
+  public function file_put_contents(string $filename, mixed $data, int $flags = 0, $context = null): int {
+    return file_put_contents($this->getFullPath($filename), $data, $flags, $context);
   }
 
-  public function mkdir(string $pathname, int $mode = 0777, bool $recursive = false, $context = null) {
-    mkdir($this->getFullPath($pathname), $mode, $recursive, $context);
+  public function mkdir(string $pathname, int $mode = 0777, bool $recursive = false, $context = null): bool {
+    return mkdir($this->getFullPath($pathname), $mode, $recursive, $context);
   }
 
-  public function file_exists(string $filename) {
+  public function file_exists(string $filename): bool {
     return file_exists($this->getFullPath($filename));
+  }
+
+  public function fopen(string $filename, string $mode, bool $use_include_path = false, $context = null) {
+    return fopen($this->getFullPath($filename), $mode, $use_include_path, $context);
   }
 
 }
