@@ -15,7 +15,7 @@ class ApiProvider extends ProtectedSingleton {
 
   private FilesystemApi $filesystem;
 
-  protected function init(LibraryManager2 $lib): void {
+  protected function init(LibraryManager2 $lib = null): void {
     $this->filesystem = FilesystemApi::create($lib);
   }
 
