@@ -3,7 +3,7 @@
 namespace core\storage;
 
 use core\security\ProtectedSingleton;
-use \WeakRef;
+use \WeakReference;
 use \ReflectionClass;
 
 /**
@@ -23,7 +23,7 @@ class SaveableCache extends ProtectedSingleton {
     }
     if (!isset($instanceCache[$class][$id]) || (($saveable = $instanceCache[$class][$id]->acquire()) === null)) {
       $saveable = $class::loadFromIdFromDatabase($id);
-      $instanceCache[$class][$id] = new WeakRef($saveable);
+      $instanceCache[$class][$id] = WeakReference::create($saveable);
     }
     return $saveable;
   }
@@ -33,7 +33,7 @@ class SaveableCache extends ProtectedSingleton {
     $this->createMissingArrays($class);
     $reflection = $this->getSavableReflection($class);
     $id = $saveable->getId();
-    $instanceCache[$class][$id] = new WeakRef($saveable);
+    $instanceCache[$class][$id] = WeakReference::create($saveable);
   }
 
   private function createMissingArrays(string $class): void {
