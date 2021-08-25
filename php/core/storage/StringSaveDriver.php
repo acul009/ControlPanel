@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core\storage;
 
 /**
@@ -9,7 +11,7 @@ namespace core\storage;
  */
 interface StringSaveDriver {
 
-  public function save(string $type, int $id, string $content): void;
+    public function save(string $type, int $id, string $content): void;
 
-  public function load(string $type, int $id): string;
+    public function load(string $type, int $id): string;
 }

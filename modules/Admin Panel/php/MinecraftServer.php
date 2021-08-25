@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,21 +14,21 @@
  */
 class MinecraftServer {
 
-  private string $strName;
-  private string $strVersion;
-  private int $intRAM;
-  private int $intMaxPlayers;
+    private string $strName;
+    private string $strVersion;
+    private int $intRAM;
+    private int $intMaxPlayers;
 
-  public static function getVersions(): array {
+    public static function getVersions(): array {
+        
+    }
 
-  }
+    public function start(): void {
+        
+    }
 
-  public function start(): void {
-
-  }
-
-  public function saveChanges(): void {
-
-  }
+    public function saveChanges(): void {
+        
+    }
 
 }

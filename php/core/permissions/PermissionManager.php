@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core\permissions;
 
 use core\LibraryManager;
@@ -12,15 +14,15 @@ use core\LibraryManager;
  */
 class PermissionManager {
 
-  private PermissionEntity2 $modulePermissions;
-  private PermissionEntity2 $userPermissions;
+    private PermissionEntity2 $modulePermissions;
+    private PermissionEntity2 $userPermissions;
 
-  function __construct() {
+    function __construct() {
+        
+    }
 
-  }
-
-  public function may(string $permission): bool {
-
-  }
+    public function may(string $permission): bool {
+        
+    }
 
 }

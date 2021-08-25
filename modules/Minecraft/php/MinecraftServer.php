@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Description of Server
  *
@@ -7,28 +9,27 @@
  */
 class MinecraftServer {
 
-  private string $strName;
-  private string $strVersion;
+    private string $strName;
+    private string $strVersion;
+    private MinecraftWorld $objWorld;
 
-  private MinecraftWorld $objWorld;
+    private const CONFIG_FILENAME = 'controlPanel.conf';
 
-  private const CONFIG_FILENAME = 'controlPanel.conf';
-
-  private function __construct() {
-
-  }
-
-  public static function getServerByName(string $strServerName): MinecraftServer {
-    return new static(Minecraft::SERVER_DIRECTORY . '/' .$strServerName);
-  }
-
-  public static function getServerList(): array {
-    $arrServerNames = glob(Minecraft::SERVER_DIRECTORY . '/*', GLOB_ONLYDIR);
-    $arrServerList = [];
-    foreach ($arrServerNames as $strServerName) {
-      $arrServerList[] = static::getServerByName($strServerName);
+    private function __construct() {
+        
     }
-    return $arrServerList;
-  }
+
+    public static function getServerByName(string $strServerName): MinecraftServer {
+        return new static(Minecraft::SERVER_DIRECTORY . '/' . $strServerName);
+    }
+
+    public static function getServerList(): array {
+        $arrServerNames = glob(Minecraft::SERVER_DIRECTORY . '/*', GLOB_ONLYDIR);
+        $arrServerList = [];
+        foreach ($arrServerNames as $strServerName) {
+            $arrServerList[] = static::getServerByName($strServerName);
+        }
+        return $arrServerList;
+    }
 
 }

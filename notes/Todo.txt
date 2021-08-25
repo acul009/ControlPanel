@@ -1,0 +1,13 @@
+Redo Permission-System (still missing proper API)
+Create Ini-Api (screw that, use JSON)
+Create Saveable-Object and integrated Filesystem-Driver
+Create Settings Class based on Saveable
+Create Logging API
+Create Plugin-System
+Programm Module-System
+Rework Users
+Implement Endpoints and new Request Path
+create custom Session-System and API
+Programm logic for Users
+AdminPanelV2 (AdminPanelV2.txt)
+Übersetzungs-API erstellen

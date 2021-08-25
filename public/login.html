@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Control-Panel Login</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./H512.js"></script>
-    <script src="./login.js"></script>
-    <link rel="stylesheet" type="text/css" href="./login.css">
-  </head>
-  <body>
-    <div>
-      <div id="logoContainer">
-        <img id="logo" src="./logo.png" alt="logo">
-      </div>
-      <div id="loginContainer">
-        <h1>Control Panel Login</h1>
+    <head>
+        <title>Control-Panel Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="./H512.js"></script>
+        <script src="./login.js"></script>
+        <link rel="stylesheet" type="text/css" href="./login.css">
+    </head>
+    <body>
         <div>
-          <div>
-            <div>Username:</div>
-            <div>
-              <form id="formUserHash" action="./index.php?action=login" method="post">
-                <input id="inputUser" name="user" type="text">
-                <input id="inputHash" name="hash" type="hidden">
-              </form>
+            <div id="logoContainer">
+                <img id="logo" src="./logo.png" alt="logo">
             </div>
-          </div>
-          <div>
-            <div>Password:</div>
-            <div>
-              <input id="inputPassword" type="password">
+            <div id="loginContainer">
+                <h1>Control Panel Login</h1>
+                <div>
+                    <div>
+                        <div>Username:</div>
+                        <div>
+                            <form id="formUserHash" action="./index.php?action=login" method="post">
+                                <input id="inputUser" name="user" type="text">
+                                <input id="inputHash" name="hash" type="hidden">
+                            </form>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Password:</div>
+                        <div>
+                            <input id="inputPassword" type="password">
+                        </div>
+                    </div>
+                    <div>
+                        <div id="buttonSubmit" data-type="login">Login</div>
+                    </div>
+                    <div>
+                        By logging in you accept the cookie responsible for managing your session.
+                    </div>
+                </div>
             </div>
-          </div>
-          <div>
-            <div id="buttonSubmit" data-type="login">Login</div>
-          </div>
-          <div>
-            By logging in you accept the cookie responsible for managing your session.
-          </div>
         </div>
-      </div>
-    </div>
-  </body>
+    </body>
 </html>

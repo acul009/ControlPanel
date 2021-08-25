@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace gui;
 
 /**
@@ -8,17 +10,17 @@ namespace gui;
  * @author acul
  */
 class Multiselect extends guiComponent {
-  //put your code here
 
-  private array $arrOptions;
+    //put your code here
 
-  public function __construct($arrOptions) {
-    $this->arrOptions = $arrOptions;
-  }
+    private array $arrOptions;
 
+    public function __construct($arrOptions) {
+        $this->arrOptions = $arrOptions;
+    }
 
-  public function getHTML(): string {
-
-  }
+    public function getHTML(): string {
+        
+    }
 
 }

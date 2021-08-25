@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core\security;
 
 use core\security\exceptions\ProtectedSingletonException;
@@ -16,36 +18,36 @@ use core\security\exceptions\ProtectedSingletonException;
  */
 abstract class ProtectedSingleton {
 
-  /**
-   * Set of already created Signletons
-   * @var array
-   */
-  private static array $created = [];
+    /**
+     * Set of already created Signletons
+     * @var array
+     */
+    private static array $created = [];
 
-  protected final function __construct() {
-
-  }
-
-  /**
-   * This function is used to initialize the object.
-   * all arguments from create() are passed on.
-   * <br><b>To make this implementation effective, the child class has to declare this method final!</b>
-   */
-  abstract protected function init(): void;
-
-  public static final function create(): static {
-    if (self::alreadyCreated()) {
-      throw new ProtectedSingletonException();
+    protected final function __construct() {
+        
     }
-    self::$created[static::class] = true;
-    $args = func_get_args();
-    $instance = new static();
-    $instance->init(...$args);
-    return $instance;
-  }
 
-  public static final function alreadyCreated(): bool {
-    return isset(self::$created[static::class]);
-  }
+    /**
+     * This function is used to initialize the object.
+     * all arguments from create() are passed on.
+     * <br><b>To make this implementation effective, the child class has to declare this method final!</b>
+     */
+    abstract protected function init(): void;
+
+    public static final function create(): static {
+        if (self::alreadyCreated()) {
+            throw new ProtectedSingletonException();
+        }
+        self::$created[static::class] = true;
+        $args = func_get_args();
+        $instance = new static();
+        $instance->init(...$args);
+        return $instance;
+    }
+
+    public static final function alreadyCreated(): bool {
+        return isset(self::$created[static::class]);
+    }
 
 }

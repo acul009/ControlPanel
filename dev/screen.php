@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 //if(file_exists('./screenlog.0')) {
 //  unlink('./screenlog.0');
 //}

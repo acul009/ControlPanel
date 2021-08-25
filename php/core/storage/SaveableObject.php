@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core\storage;
 
 use core\drivers\SaveableDriver;
@@ -16,12 +18,12 @@ use ReflectionClass;
  */
 abstract class SaveableObject extends SaveableDriver {
 
-  protected static final function getCurrentSavableReflection(): ReflectionClass {
-    throw new RestrictedFunctionException();
-  }
+    protected static final function getCurrentSavableReflection(): ReflectionClass {
+        throw new RestrictedFunctionException();
+    }
 
-  protected function setId(int $id): void {
-    throw new RestrictedFunctionException();
-  }
+    protected function setId(int $id): void {
+        throw new RestrictedFunctionException();
+    }
 
 }

@@ -1,0 +1,10 @@
+download different server jars from official minecraft mirror
+allow downloading and uploading Worlds
+create servers and link to worlds
+edit config with nice interface
+console access
+backups
+start&stop Server
+Edit Whitelist
+Allow Users to Share server access
+Platform white Blacklist for Pricks

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core;
 
 use core\storage\FilesystemApi;
@@ -13,14 +15,14 @@ use core\security\ProtectedSingleton;
  */
 class ApiProvider extends ProtectedSingleton {
 
-  private FilesystemApi $filesystem;
+    private FilesystemApi $filesystem;
 
-  protected function init(LibraryManager2 $lib = null): void {
-    $this->filesystem = FilesystemApi::create($lib);
-  }
+    protected function init(LibraryManager2 $lib = null): void {
+        $this->filesystem = FilesystemApi::create($lib);
+    }
 
-  public function fs(): FilesystemApi {
-    return $this->filesystem;
-  }
+    public function fs(): FilesystemApi {
+        return $this->filesystem;
+    }
 
 }

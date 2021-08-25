@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core\storage;
 
 /**
@@ -9,23 +11,23 @@ namespace core\storage;
  */
 class SaveableTest extends SaveableObject {
 
-  private string $testValue = 'lel';
-  private string $testValue2 = 'this is a test';
-  public int $intValue = 7;
-  private int $intValue3;
-  private int $intValue2;
-  private string $testString;
+    private string $testValue = 'lel';
+    private string $testValue2 = 'this is a test';
+    public int $intValue = 7;
+    private int $intValue3;
+    private int $intValue2;
+    private string $testString;
 
-  public function __construct() {
-    $this->intValue3 = &$this->intValue;
-  }
+    public function __construct() {
+        $this->intValue3 = &$this->intValue;
+    }
 
-  public function getTestString(): string {
-    return $this->testString;
-  }
+    public function getTestString(): string {
+        return $this->testString;
+    }
 
-  public function setTestString(string $testString): void {
-    $this->testString = $testString;
-  }
+    public function setTestString(string $testString): void {
+        $this->testString = $testString;
+    }
 
 }

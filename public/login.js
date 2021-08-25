@@ -6,33 +6,33 @@
 
 
 function login() {
-  document.getElementById("inputHash").value = SHA512(document.getElementById("inputPassword").value);
-  document.getElementById("formUserHash").submit();
+    document.getElementById("inputHash").value = SHA512(document.getElementById("inputPassword").value);
+    document.getElementById("formUserHash").submit();
 }
 
 function register() {
-  var pass = document.getElementById("inputPassword").value;
-  var repeat = document.getElementById("confirmPassword").value;
-  if (pass === repeat) {
-    login();
-  } else {
-    alert('Both passwords fields need to be the same!');
-  }
+    var pass = document.getElementById("inputPassword").value;
+    var repeat = document.getElementById("confirmPassword").value;
+    if (pass === repeat) {
+        login();
+    } else {
+        alert('Both passwords fields need to be the same!');
+    }
 }
 
 window.onload = function () {
-  document.getElementById("buttonSubmit").addEventListener("click", function (event) {
-    var type = event.target.dataset.type;
-    if (type === 'login') {
-      login();
-    } else if (type === 'register') {
-      register();
-    }
-  });
-  document.getElementById("inputPassword").addEventListener("keyup", function (event) {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      login();
-    }
-  });
+    document.getElementById("buttonSubmit").addEventListener("click", function (event) {
+        var type = event.target.dataset.type;
+        if (type === 'login') {
+            login();
+        } else if (type === 'register') {
+            register();
+        }
+    });
+    document.getElementById("inputPassword").addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            login();
+        }
+    });
 };

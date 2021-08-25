@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core\storage\exceptions;
 
 use UnexpectedValueException;
@@ -13,9 +15,9 @@ use UnexpectedValueException;
  */
 class InvalidPathException extends UnexpectedValueException {
 
-  public function __construct(string $path = "", int $code = 0, \Throwable $previous = NULL) {
-    $message = 'The given Path "' . $path . '" is invalid or forbidden.';
-    parent::__construct($message, $code, $previous);
-  }
+    public function __construct(string $path = "", int $code = 0, \Throwable $previous = NULL) {
+        $message = 'The given Path "' . $path . '" is invalid or forbidden.';
+        parent::__construct($message, $code, $previous);
+    }
 
 }

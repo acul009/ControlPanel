@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 include_once '../php/PermissionEntity.php';
 include_once '../php/User.php';
 

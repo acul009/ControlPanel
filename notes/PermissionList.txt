@@ -1,0 +1,27 @@
+/core - core functions
+/core/auth - authentication
+/core/auth/users - functions concerning user managment
+/core/auth/users/view
+/core/auth/users/add
+/core/auth/users/remove
+/core/auth/users/edit
+/core/auth/users/edit/name
+/core/auth/users/edit/password
+/core/auth/users/edit/tags
+/core/auth/users/edit/permissions
+/core/auth/login
+/core/auth/logout
+/core/auth/register
+/core/lib - Library and Module Managment
+/core/lib/modules/view
+/core/lib/modules/enable
+/core/lib/modules/disable
+/core/lib/modules/edit
+/core/lib/modules/edit/permissions
+/modules - Modules
+/modules/<module> Permissions regarding a module
+/php - restricted php functions
+/php/include
+/php/fs - direct filesystem access
+/php/fs/read
+/php/fs/write

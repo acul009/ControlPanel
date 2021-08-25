@@ -1,0 +1,15 @@
+Permissions are based on a tree, simialar to a file path
+
+Permissions can be found for different entities -> for now users and modules (maybe tokens?)
+
+If you have a permission, all sub-permissions are granted too
+The highest permission is / (root)
+A module can only edit permissions of a users which reside in it's own subtree:
+e.g.: Module Minecraft:
+/modules/minecraft/ViewServer - allowed
+/modules/minecraft/ViewServer/Server2 - allowed
+/modules/minecraft - allowed
+/core/addUser - forbidden
+
+A Module can't edit it's own permission if it doesn't have the required permission to do that itself
+Permissions can be editet in the AdminPanelV2

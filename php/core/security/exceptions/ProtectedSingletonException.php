@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core\security\exceptions;
 
 /**
@@ -11,8 +13,8 @@ namespace core\security\exceptions;
  */
 class ProtectedSingletonException extends RestrictedFunctionException {
 
-  public function __construct(string $message = 'This singleton has already been created.', int $code = 0, \Throwable $previous = null) {
-    return parent::__construct($message, $code, $previous);
-  }
+    public function __construct(string $message = 'This singleton has already been created.', int $code = 0, \Throwable $previous = null) {
+        return parent::__construct($message, $code, $previous);
+    }
 
 }

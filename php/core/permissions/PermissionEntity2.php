@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core\permissions;
 
 /**
@@ -8,9 +10,9 @@ namespace core\permissions;
  * All Permission manipulation is supposed to be done via the PermissionManager.
  *
  * A Permission is a case insensitive string which basically lokks like a path.
- * e.g.:    /core/permissions
- *          /core/permissions/add
- *          /adminpanel/editusers
+ * e.g.:    /core/users
+ *          /core/users/add
+ *          /modules/adminpanel/editusers
  *
  * If an entity has a permission, all sub-permissions will also be viewed as owned
  * e.g.: /core also includes /core/permissions
@@ -29,97 +31,97 @@ namespace core\permissions;
  */
 class PermissionEntity2 {
 
-  public const SEPERATOR = '/';
-  private const PERMISSION_REGEX = '!^/[a-zA-Z]*(?:/[a-zA-Z]+)*$!';
+    public const SEPERATOR = '/';
+    private const PERMISSION_REGEX = '!^/[a-zA-Z]*(?:/[a-zA-Z]+)*$!';
 
-  private $arrPermissionTree = [];
+    private $arrPermissionTree = [];
 
-  public function addPermission(string $strPermission): void {
-    $arrSubKeys = $this->getKeyArrayFromPermission($strPermission);
-    $arrPermissionTreePointer = &$this->arrPermissionTree;
-    foreach ($arrSubKeys as $strPermissionSubKey) {
-      if ($arrPermissionTreePointer === true) {
-        return;
-      }
+    public function addPermission(string $strPermission): void {
+        $arrSubKeys = $this->getKeyArrayFromPermission($strPermission);
+        $arrPermissionTreePointer = &$this->arrPermissionTree;
+        foreach ($arrSubKeys as $strPermissionSubKey) {
+            if ($arrPermissionTreePointer === true) {
+                return;
+            }
 
-      if (!isset($arrPermissionTreePointer[$strPermissionSubKey])) {
-        $arrPermissionTreePointer[$strPermissionSubKey] = [];
-      }
-      $arrPermissionTreePointer = &$arrPermissionTreePointer[$strPermissionSubKey];
+            if (!isset($arrPermissionTreePointer[$strPermissionSubKey])) {
+                $arrPermissionTreePointer[$strPermissionSubKey] = [];
+            }
+            $arrPermissionTreePointer = &$arrPermissionTreePointer[$strPermissionSubKey];
+        }
+        $arrPermissionTreePointer = true;
     }
-    $arrPermissionTreePointer = true;
-  }
 
-  public function removePermission(string $strPermission): bool {
-    $arrSubKeys = $this->getKeyArrayFromPermission($strPermission);
-    $strLastSubKey = array_pop($arrSubKeys);
-    $arrRemovalList = [];
-    $arrPermissionTreePointer = &$this->arrPermissionTree;
-    foreach ($arrSubKeys as $strPermissionSubKey) {
-      if ($arrPermissionTreePointer === true) {
-        return false;
-      }
-
-      if (!isset($arrPermissionTreePointer[$strPermissionSubKey])) {
-        return true;
-      }
-
-      if (count($arrPermissionTreePointer[$strPermissionSubKey]) <= 1) {
-        $arrRemovalList[$strPermissionSubKey] = &$arrPermissionTreePointer;
-      } else {
+    public function removePermission(string $strPermission): bool {
+        $arrSubKeys = $this->getKeyArrayFromPermission($strPermission);
+        $strLastSubKey = array_pop($arrSubKeys);
         $arrRemovalList = [];
-      }
-      $arrPermissionTreePointer = &$arrPermissionTreePointer[$strPermissionSubKey];
-    }
-    unset($arrPermissionTreePointer[$strLastSubKey]);
-    foreach ($arrRemovalList as $strSubKey => &$arrTreePart) {
-      unset($arrTreePart[$strSubKey]);
-    }
-    return true;
-  }
+        $arrPermissionTreePointer = &$this->arrPermissionTree;
+        foreach ($arrSubKeys as $strPermissionSubKey) {
+            if ($arrPermissionTreePointer === true) {
+                return false;
+            }
 
-  public function hasFullPermission(string $strPermission): bool {
-    return $this->hasPermission($strPermission, false);
-  }
+            if (!isset($arrPermissionTreePointer[$strPermissionSubKey])) {
+                return true;
+            }
 
-  public function hasSubPermission(string $strPermission): bool {
-    return $this->hasPermission($strPermission, true);
-  }
-
-  private function hasPermission(string $strPermission, bool $bolSubPermission = false): bool {
-    $arrSubKeys = $this->getKeyArrayFromPermission($strPermission);
-    $arrPermissionTreePointer = &$this->arrPermissionTree;
-    foreach ($arrSubKeys as $strPermissionSubKey) {
-      if ($arrPermissionTreePointer === true) {
+            if (count($arrPermissionTreePointer[$strPermissionSubKey]) <= 1) {
+                $arrRemovalList[$strPermissionSubKey] = &$arrPermissionTreePointer;
+            } else {
+                $arrRemovalList = [];
+            }
+            $arrPermissionTreePointer = &$arrPermissionTreePointer[$strPermissionSubKey];
+        }
+        unset($arrPermissionTreePointer[$strLastSubKey]);
+        foreach ($arrRemovalList as $strSubKey => &$arrTreePart) {
+            unset($arrTreePart[$strSubKey]);
+        }
         return true;
-      }
-
-      if (!isset($arrPermissionTreePointer[$strPermissionSubKey])) {
-        return false;
-      }
-      $arrPermissionTreePointer = &$arrPermissionTreePointer[$strPermissionSubKey];
     }
-    return $bolSubPermission || $arrPermissionTreePointer === true;
-  }
 
-  private function getKeyArrayFromPermission(string $strPermission) {
-    $this->throwExceptionIfPermissionInvalid($strPermission);
-    if (!isset($strPermission[1])) {
-      return [];
+    public function hasFullPermission(string $strPermission): bool {
+        return $this->hasPermission($strPermission, false);
     }
-    $arrCaseSensitiveParts = array_slice(explode(self::SEPERATOR, $strPermission), 1);
-    $arrToLowerParts = array_map('strtolower', $arrCaseSensitiveParts);
-    return $arrToLowerParts;
-  }
 
-  private function throwExceptionIfPermissionInvalid(string $strPermission): void {
-    if (!self::isPermissionValid($strPermission)) {
-      throw new InvalidPermissionException($strPermission);
+    public function hasSubPermission(string $strPermission): bool {
+        return $this->hasPermission($strPermission, true);
     }
-  }
 
-  public static function isPermissionValid(string $strPermission): bool {
-    return (bool) preg_match(self::PERMISSION_REGEX, $strPermission);
-  }
+    private function hasPermission(string $strPermission, bool $bolSubPermission = false): bool {
+        $arrSubKeys = $this->getKeyArrayFromPermission($strPermission);
+        $arrPermissionTreePointer = &$this->arrPermissionTree;
+        foreach ($arrSubKeys as $strPermissionSubKey) {
+            if ($arrPermissionTreePointer === true) {
+                return true;
+            }
+
+            if (!isset($arrPermissionTreePointer[$strPermissionSubKey])) {
+                return false;
+            }
+            $arrPermissionTreePointer = &$arrPermissionTreePointer[$strPermissionSubKey];
+        }
+        return $bolSubPermission || $arrPermissionTreePointer === true;
+    }
+
+    private function getKeyArrayFromPermission(string $strPermission) {
+        $this->throwExceptionIfPermissionInvalid($strPermission);
+        if (!isset($strPermission[1])) {
+            return [];
+        }
+        $arrCaseSensitiveParts = array_slice(explode(self::SEPERATOR, $strPermission), 1);
+        $arrToLowerParts = array_map('strtolower', $arrCaseSensitiveParts);
+        return $arrToLowerParts;
+    }
+
+    private function throwExceptionIfPermissionInvalid(string $strPermission): void {
+        if (!self::isPermissionValid($strPermission)) {
+            throw new InvalidPermissionException($strPermission);
+        }
+    }
+
+    public static function isPermissionValid(string $strPermission): bool {
+        return (bool) preg_match(self::PERMISSION_REGEX, $strPermission);
+    }
 
 }

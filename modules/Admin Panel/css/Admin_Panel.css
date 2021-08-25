@@ -4,33 +4,33 @@
 */
 
 .userList{
-  margin: 2vh 10vh;
-  list-style: none;
-  padding: 0;
+    margin: 2vh 10vh;
+    list-style: none;
+    padding: 0;
 }
 
 .userItem {
-  margin-bottom: 2vh;
-  display: block;
-  background: rgb(24,24,24);
+    margin-bottom: 2vh;
+    display: block;
+    background: rgb(24,24,24);
 }
 
 .userItem summary{
-  border-style: solid;
-  border-color: rgb(24,24,24);
-  border-width: 0.2vh;
-  padding: 1vh;
-  cursor: pointer;
-  transition-duration: 0.3s;
-  word-wrap: break-word;
+    border-style: solid;
+    border-color: rgb(24,24,24);
+    border-width: 0.2vh;
+    padding: 1vh;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    word-wrap: break-word;
 }
 
 .userItem summary:hover{
-  color: red;
-  border-color: red;
+    color: red;
+    border-color: red;
 }
 
 .userContainer{
-  text-align: center;
-  padding: 1vh;
+    text-align: center;
+    padding: 1vh;
 }

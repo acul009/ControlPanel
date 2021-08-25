@@ -1,0 +1,17 @@
+The new Admin Panel should be able to install and manage modules
+
+Module Managment:
+-install
+-deinstall
+-edit permissions of module
+
+installation:
+-ask for required permissions (admin has to accept)
+-Will activate init plugin in the module for initial setup
+
+User Managment:
+-edit permissions of user
+-Edit Tags/notes of users
+
+Needed in Core
+-Emergency mode when not modules are activated -> allows activation of admin panel

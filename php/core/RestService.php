@@ -1,4 +1,5 @@
 -<?php
+declare(strict_types=1);
 
 namespace core;
 
@@ -9,9 +10,9 @@ namespace core;
  */
 abstract class RestService extends Endpoint {
 
-  public function handleRequest(): string {
-    json_encode($this->generateResult());
-  }
+    public function handleRequest(): string {
+        json_encode($this->generateResult());
+    }
 
-  public abstract function generateResult(): array;
+    public abstract function generateResult(): array;
 }

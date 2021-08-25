@@ -5,63 +5,63 @@
 
 
 body{
-  height: 100%;
-  width: 100%;
-  background-color: rgb(48,48,48);
-  color: white;
-  margin:0;
-  cursor: default;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(48,48,48);
+    color: white;
+    margin:0;
+    cursor: default;
 }
 
 #logoContainer{
-  padding-top: 5%;
-  width:100%;
-  text-align: center;
+    padding-top: 5%;
+    width:100%;
+    text-align: center;
 }
 
 #logo {
-  width: 20%;
-  height: auto;
+    width: 20%;
+    height: auto;
 }
 
 #loginContainer{
-  width: 100%;
-  text-align: center;
+    width: 100%;
+    text-align: center;
 }
 
 input{
-  padding: 0.5vh;
-  margin: 1vh;
-  background-color: rgb(32,32,32);
-  height: 2vh;
-  width: 20vh;
-  color: white;
-  margin-bottom: 1vh;
-  cursor: text;
-  border-style: solid;
-  border-color:  rgb(48,48,48);
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
-  outline: none;
+    padding: 0.5vh;
+    margin: 1vh;
+    background-color: rgb(32,32,32);
+    height: 2vh;
+    width: 20vh;
+    color: white;
+    margin-bottom: 1vh;
+    cursor: text;
+    border-style: solid;
+    border-color:  rgb(48,48,48);
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+    outline: none;
 }
 
 input:focus{
-  border-color:  red;
+    border-color:  red;
 }
 
 #buttonSubmit {
-  margin: 1vh auto;
-  width: 20vh;
-  padding: 1vh;
-  background: black;
-  border-style: solid;
-  border-color: rgb(48,48,48);
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
-  cursor: pointer;
+    margin: 1vh auto;
+    width: 20vh;
+    padding: 1vh;
+    background: black;
+    border-style: solid;
+    border-color: rgb(48,48,48);
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+    cursor: pointer;
 }
 
 #buttonSubmit:hover {
-  border-color: red;
-  width: 25vh;
+    border-color: red;
+    width: 25vh;
 }

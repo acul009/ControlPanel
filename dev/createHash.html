@@ -5,37 +5,37 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-  <head>
-    <title>Hash-Generator</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../public/H512.js"></script>
-    <script>
-      function login() {
-        document.getElementById("inputHash").value = SHA512(document.getElementById("inputPassword").value);
-        document.getElementById("formUserHash").submit();
-      }
+    <head>
+        <title>Hash-Generator</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="../public/H512.js"></script>
+        <script>
+            function login() {
+                document.getElementById("inputHash").value = SHA512(document.getElementById("inputPassword").value);
+                document.getElementById("formUserHash").submit();
+            }
 
-      window.onload = function () {
-        document.getElementById("buttomSubmit").addEventListener("click", login);
-      };
-    </script>
-  </head>
-  <body>
-    <h1>Control Panel Login</h1>
-    <div>
-      <div>
-        <div>Password:</div>
+            window.onload = function () {
+                document.getElementById("buttomSubmit").addEventListener("click", login);
+            };
+        </script>
+    </head>
+    <body>
+        <h1>Control Panel Login</h1>
         <div>
-          <input id="inputPassword" type="password">
+            <div>
+                <div>Password:</div>
+                <div>
+                    <input id="inputPassword" type="password">
+                </div>
+            </div>
+            <form id="formUserHash" action="./createHash.php" method="post">
+                <input id="inputHash" name="hash" type="hidden">
+            </form>
+            <div>
+                <button id="buttomSubmit">Login</button>
+            </div>
         </div>
-      </div>
-      <form id="formUserHash" action="./createHash.php" method="post">
-        <input id="inputHash" name="hash" type="hidden">
-      </form>
-      <div>
-        <button id="buttomSubmit">Login</button>
-      </div>
-    </div>
-  </body>
+    </body>
 </html>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core\security;
 
 use \core\storage\SaveableObject;
@@ -11,36 +13,36 @@ use \core\storage\SaveableObject;
  */
 class SecurityScanCache extends SaveableObject {
 
-  protected array $lastFileScans = [];
-  protected array $filePermissions = [];
+    protected array $lastFileScans = [];
+    protected array $filePermissions = [];
 
-  public function isScanStillValid(string $filePath) {
-    if (!isset($this->lastFileScans[$filePath])) {
-      return false;
+    public function isScanStillValid(string $filePath) {
+        if (!isset($this->lastFileScans[$filePath])) {
+            return false;
+        }
+        return $this->lastFileScans[$filePath] <= time();
     }
-    return $this->lastFileScans[$filePath] <= time();
-  }
 
-  private function updateFileScanDate(string $filePath) {
-    $this->lastFileScans[$filePath] = time();
-  }
-
-  public function dropOutdatedFilepaths() {
-    foreach ($lastFileScans as $filePath => $lastScan) {
-      if (!file_exists($filePath)) {
-        unset($lastFileScans[$filePath]);
-        unset($filePermissions[$filePath]);
-      }
+    private function updateFileScanDate(string $filePath) {
+        $this->lastFileScans[$filePath] = time();
     }
-  }
 
-  public function getNeededPermissionsForFile(string $filePath): array {
-    return $this->filePermissions[$filePath];
-  }
+    public function dropOutdatedFilepaths() {
+        foreach ($lastFileScans as $filePath => $lastScan) {
+            if (!file_exists($filePath)) {
+                unset($lastFileScans[$filePath]);
+                unset($filePermissions[$filePath]);
+            }
+        }
+    }
 
-  public function setNeededPermissionsForFile(string $filePath, array $neededPermissions) {
-    $this->updateFileScanDate($filePath);
-    $this->filePermissions[$filePath] = $neededPermissions;
-  }
+    public function getNeededPermissionsForFile(string $filePath): array {
+        return $this->filePermissions[$filePath];
+    }
+
+    public function setNeededPermissionsForFile(string $filePath, array $neededPermissions) {
+        $this->updateFileScanDate($filePath);
+        $this->filePermissions[$filePath] = $neededPermissions;
+    }
 
 }

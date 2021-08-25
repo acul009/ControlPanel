@@ -1,23 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core;
 
 abstract class Endpoint extends Plugin {
 
-  protected Request $request;
+    protected Request $request;
 
-  function __construct(Request $request) {
-    $this->request = $request;
-  }
+    function __construct(Request $request) {
+        $this->request = $request;
+    }
 
-  public abstract function handleRequest(Request $objRequest): string;
+    public abstract function handleRequest(Request $objRequest): string;
 
-  public static function getRelativePluginPath(): string {
-    return '/endpoints';
-  }
+    public static function getRelativePluginPath(): string {
+        return '/endpoints';
+    }
 
-  public static function getLink(): string {
-
-  }
+    public static function getLink(): string {
+        
+    }
 
 }

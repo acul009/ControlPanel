@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace core;
 
 /**
@@ -12,30 +14,30 @@ namespace core;
  */
 abstract class Plugin {
 
-  private const EXTRACT_NAME_REGEX = '/(.*)\.php$/';
+    private const EXTRACT_NAME_REGEX = '/(.*)\.php$/';
 
-  public abstract function getRequiredPermissions(): array;
+    public abstract function getRequiredPermissions(): array;
 
-  public abstract function getRequiredSubPermissions(): array;
+    public abstract function getRequiredSubPermissions(): array;
 
-  /**
-   * This function should be implemented in the abstract Plugin definition
-   */
-  public static abstract function getRelativePluginPath(): string;
-
-  public static function getAvailablePluginList(): array {
-    $strRelativePath = static::getRelativePluginPath();
-    /*
-     * TODO:
-     * unfortunatly this has to include the Plugin files to Check for neccesary Permissions
+    /**
+     * This function should be implemented in the abstract Plugin definition
      */
-  }
+    public static abstract function getRelativePluginPath(): string;
 
-  public static function initiatePlugin($strPluginName): void {
-    /*
-     * TODO
-     * Note: redirect include through LibraryManager
-     */
-  }
+    public static function getAvailablePluginList(): array {
+        $strRelativePath = static::getRelativePluginPath();
+        /*
+         * TODO:
+         * unfortunatly this has to include the Plugin files to Check for neccesary Permissions
+         */
+    }
+
+    public static function initiatePlugin($strPluginName): void {
+        /*
+         * TODO
+         * Note: redirect include through LibraryManager
+         */
+    }
 
 }

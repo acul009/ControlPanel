@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace gui;
 
 /**
@@ -9,6 +11,5 @@ namespace gui;
  */
 abstract class GuiComponent {
 
-  public abstract function getHTML(): string;
-
+    public abstract function getHTML(): string;
 }
