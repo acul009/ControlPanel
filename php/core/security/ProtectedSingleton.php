@@ -49,5 +49,12 @@ abstract class ProtectedSingleton {
     public static final function alreadyCreated(): bool {
         return isset(self::$created[static::class]);
     }
+    
+    public final function __clone() {
+        throw new ProtectedSingletonException('You aren\'t allowed to duplicate this singleton.');
+    }
+    
+    
+
 
 }
