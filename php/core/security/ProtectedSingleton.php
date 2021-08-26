@@ -54,7 +54,13 @@ abstract class ProtectedSingleton {
         throw new ProtectedSingletonException('You aren\'t allowed to duplicate this singleton.');
     }
     
+    public final function __unserialize() {
+        throw new ProtectedSingletonException('You aren\'t allowed to serialize this singleton.');
+    }
     
+    public final function __serialize() {
+        throw new ProtectedSingletonException('You aren\'t allowed to serialize this singleton.');
+    }
 
 
 }
