@@ -33,9 +33,14 @@ class SaveableCache extends ProtectedSingleton {
     public function addSaveable(SaveableObject $saveable) {
         $class = get_class($saveable);
         $this->createMissingArrays($class);
-        $reflection = $this->getSavableReflection($class);
         $id = $saveable->getId();
         $instanceCache[$class][$id] = WeakReference::create($saveable);
+    }
+    
+    public function removeSaveable(SaveableObject $saveable) {
+        $class = get_class($saveable);
+        $id = $saveable->getId();
+        unset($instanceCache[$class][$id]);
     }
 
     private function createMissingArrays(string $class): void {
@@ -43,25 +48,6 @@ class SaveableCache extends ProtectedSingleton {
         if (!isset($instanceCache[$class])) {
             $instanceCache[$class] = [];
         }
-    }
-
-    public function getSavableReflection(string $class): ReflectionClass {
-        if (!isset($reflectionCache[$class])) {
-            try {
-                $reflection = new ReflectionClass($class);
-                if ($reflection->isSubclassOf(SaveableObject::class) && $reflection->isInstantiable()) {
-                    $reflectionCache[$class] = $reflection;
-                } else {
-                    $reflectionCache[$class] = false;
-                }
-            } catch (ReflectionException $ex) {
-                throw new UnsavableClassException($class, $ex);
-            }
-        }
-        if ($reflectionCache[$class] === false) {
-            throw new UnsavableClassException($class);
-        }
-        return $reflectionCache[$class];
     }
 
     protected function init(): void {
