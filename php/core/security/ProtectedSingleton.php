@@ -61,6 +61,14 @@ abstract class ProtectedSingleton {
     public final function __serialize() {
         throw new ProtectedSingletonException('You aren\'t allowed to serialize this singleton.');
     }
+    
+    public final function __get($name) {
+        throw new ProtectedSingletonException('You aren\'t allowed to get values from this singleton.');
+    }
+    
+    public final function __set($name, $value) {
+        throw new ProtectedSingletonException('You aren\'t allowed to set values from this singleton.');
+    }
 
 
 }
