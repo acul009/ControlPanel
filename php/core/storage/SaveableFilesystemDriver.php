@@ -30,13 +30,12 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
     private const DATA_SUBFOLDER = 'data';
     private const ID_FILE = 'id.bin';
 
-    private bool $isSaveTarget = false;
     private bool $isDirty = false;
     private static FilesystemApi $fs;
 
     public function saveToDatabase(): int {
         $fs = self::$fs;
-        $this->isSaveTarget = true;
+        $this->setSerializeable(true);
         $dir = self::getSavePrefix();
         if (!$fs->file_exists($dir)) {
             $fs->mkdir($dir, 0777, true);
@@ -56,8 +55,17 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
         fflush($file);
         flock($file, LOCK_UN);
         fclose($file);
-        $this->isSaveTarget = false;
+        $this->setSerializeable(false);
         return parent::getId();
+    }
+
+    public function deleteFromDatabase(): void {
+        $fs = self::$fs;
+        $path = self::getSaveLocation(parent::getId());
+        $file = $fs->fopen($path, 'r');
+        flock($file, LOCK_EX);
+        unlink($path);
+        fclose($file);
     }
 
     private static function generateId() {
@@ -98,7 +106,7 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
             throw new UnknownIdException($id);
         }
         $file = $fs->fopen($path, 'r');
-        flock($file, LOCK_EX);
+        flock($file, LOCK_SH);
         $serialzed = stream_get_contents($file);
         flock($file, LOCK_UN);
         fclose($file);
@@ -133,51 +141,6 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
 
     private static function getTypename(): string {
         return str_replace('\\', '/', static::class);
-    }
-
-    public function __serialize(): array {
-        $arrData = [];
-        $arrData[self::SAVE_KEY_ID] = parent::getId();
-        if (!$this->isSaveTarget) {
-            $arrData[self::SAVE_KEY_TYPE] = self::SAVE_TYPE_ID;
-        } else {
-            if ($this->isDirty) {
-                throw new DirtySavableException();
-            }
-            $closure = \Closure::bind(function () {
-                        return get_object_vars($this);
-                    }, $this, static::class);
-            $arrData[self::SAVE_KEY_TYPE] = self::SAVE_TYPE_DATA;
-            $arrData[self::SAVE_KEY_DATA] = $closure();
-        }
-        return $arrData;
-    }
-
-    public function __unserialize(array $data): void {
-        parent::setId($data[self::SAVE_KEY_ID]);
-        if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_DATA) {
-            $this->loadDataFromArray($data[self::SAVE_KEY_DATA]);
-        } else if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_ID) {
-            $this->isDirty = true;
-        } else {
-            /*
-             * TODO
-             */
-            throw new \Exception();
-        }
-    }
-
-    protected function loadDataFromArray(array $data): void {
-        /*
-         * Pass by reference is extremly important here!
-         * Without it references will get lost during unserialization
-         */
-        $closure = \Closure::bind(function (array $data) {
-                    foreach ($data as $key => &$value) {
-                        $this->$key = &$value;
-                    }
-                }, $this, static::class);
-        $closure($data);
     }
 
 }

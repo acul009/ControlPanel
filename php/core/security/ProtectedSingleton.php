@@ -49,26 +49,25 @@ abstract class ProtectedSingleton {
     public static final function alreadyCreated(): bool {
         return isset(self::$created[static::class]);
     }
-    
+
     public final function __clone() {
         throw new ProtectedSingletonException('You aren\'t allowed to duplicate this singleton.');
     }
-    
-    public final function __unserialize() {
+
+    public final function __unserialize(array $data): void {
         throw new ProtectedSingletonException('You aren\'t allowed to serialize this singleton.');
     }
-    
-    public final function __serialize() {
+
+    public final function __serialize(): array {
         throw new ProtectedSingletonException('You aren\'t allowed to serialize this singleton.');
     }
-    
+
     public final function __get($name) {
         throw new ProtectedSingletonException('You aren\'t allowed to get values from this singleton.');
     }
-    
-    public final function __set($name, $value) {
+
+    public final function __set($name, $value): void {
         throw new ProtectedSingletonException('You aren\'t allowed to set values from this singleton.');
     }
-
 
 }

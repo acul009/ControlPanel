@@ -17,6 +17,15 @@ abstract class SaveableBase {
 
     private static SaveableCache $cache;
     private int $id = -1;
+    private bool $serializeable = false;
+
+    protected function getSerializeable(): bool {
+        return $this->serializeable;
+    }
+
+    protected function setSerializeable(bool $serializeable): void {
+        $this->serializeable = $serializeable;
+    }
 
     public static abstract function loadFromIdFromDatabase(int $id): static;
 
@@ -27,9 +36,9 @@ abstract class SaveableBase {
         self::$cache->addSaveable($this);
         return $id;
     }
-    
-    public abstract function deleteFromDatabase(): int;
-    
+
+    public abstract function deleteFromDatabase(): void;
+
     public function delete(): void {
         self::$cache->removeSaveable($this);
         $this->deleteFromDatabase();
@@ -54,19 +63,80 @@ abstract class SaveableBase {
             self::$cache = SaveableCache::create();
         }
     }
-    
-    protected final function getIndices() : array {
+
+    protected final function getIndices(): array {
         $rawIndices = $this->generateIndices();
         $preparedIndices = [];
-        foreach($rawIndices as $indexName => $value) {
-            if(is_object($value) || is_array($value)) {
+        foreach ($rawIndices as $indexName => $value) {
+            if (is_object($value) || is_array($value)) {
                 $preparedIndices[$indexName] = serialize($value);
             } else {
                 $preparedIndices[$indexName] = $value;
             }
         }
     }
-    
+
+    public function __serialize(): array {
+        $arrData = [];
+        $arrData[self::SAVE_KEY_ID] = self::getId();
+        if (!$this->getSerializeable()) {
+            $arrData[self::SAVE_KEY_TYPE] = self::SAVE_TYPE_ID;
+        } else {
+            if ($this->isDirty) {
+                throw new DirtySavableException();
+            }
+            $closure = \Closure::bind(function () {
+                        return get_object_vars($this);
+                    }, $this, static::class);
+            $arrData[self::SAVE_KEY_TYPE] = self::SAVE_TYPE_DATA;
+            $arrData[self::SAVE_KEY_DATA] = $closure();
+        }
+        return $arrData;
+    }
+
+    public function __unserialize(array $data): void {
+        self::setId($data[self::SAVE_KEY_ID]);
+        if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_DATA) {
+            $this->loadDataFromArray($data[self::SAVE_KEY_DATA]);
+        } else if ($data[self::SAVE_KEY_TYPE] == self::SAVE_TYPE_ID) {
+            $this->isDirty = true;
+        } else {
+            /*
+             * TODO
+             */
+            throw new \Exception();
+        }
+    }
+
+    protected function loadDataFromArray(array $data): void {
+        /*
+         * Pass by reference is extremly important here!
+         * Without it references will get lost during unserialization
+         */
+        $closure = \Closure::bind(function (array $data) {
+                    foreach ($data as $key => &$value) {
+                        $this->$key = &$value;
+                    }
+                }, $this, static::class);
+        $closure($data);
+    }
+
+    /**
+     * You can use this function to load your saveableObjects by filtering
+     * with your indices.
+     * <br>
+     * This function is meant to be used in a wrapper function e.g.:
+     * <br>
+     * <pre>
+     * public function loadByUsername(string $username){
+     * &nbsp;&nbsp; return self::loadFromFilter(SaveableFilter::equals('username', $username);
+     * }
+     * </pre>
+     *
+     * @return array[static] The found objects
+     */
+    protected abstract function loadFromFilter(SaveableFilter $filter): array;
+
     /**
      * Use this function to return an associative array of values you can later
      * filter for.
@@ -85,6 +155,5 @@ abstract class SaveableBase {
      * <br>
      * <b>Filters are effected by things like array order! Sort arrays before returning to avoid confusion.</b>
      */
-    protected abstract function generateIndices(): array;
-
+    protected abstract function generateIndices(): IndexCollection|null;
 }
