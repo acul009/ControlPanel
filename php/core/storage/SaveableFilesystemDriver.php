@@ -10,7 +10,12 @@ use core\storage\exceptions\DirtySavableException;
 use core\storage\exceptions\UnknownIdException;
 
 /**
- * Description of SaveableFilesystemDriver
+ * This is a simple driver, which stores the object data inside the data directory.
+ * <br>
+ * It loads and saves objects by creating a unique path from their id.
+ * <br>
+ * This allows the driver to quickly load and save objects by using
+ * the filesystem index.
  *
  * @author acul
  */
@@ -21,7 +26,7 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
     private const SAVE_KEY_TYPE = 1;
     private const SAVE_KEY_DATA = 2;
     private const SAVE_KEY_ID = 0;
-    private const STORAGE_SUBFOLDER = 'storage';
+    private const STORAGE_SUBFOLDER = 'SaveableObjects';
     private const DATA_SUBFOLDER = 'data';
     private const ID_FILE = 'id.bin';
 
@@ -120,7 +125,10 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
     }
 
     public static function init(): static {
-        return static::loadFromId(parent::getId());
+        if ($this->isDirty) {
+            return static::loadFromId(parent::getId());
+        }
+        return $this;
     }
 
     private static function getTypename(): string {
