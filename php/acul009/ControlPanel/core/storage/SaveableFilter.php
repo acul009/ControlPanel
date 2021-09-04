@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\storage;
 
 /**
  * Objects of this class are used as a syntax free way to add filters to db requests.

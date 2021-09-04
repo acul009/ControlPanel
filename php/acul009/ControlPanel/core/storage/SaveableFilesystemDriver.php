@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\storage;
 
 use \utils\StringTools;
-use \Serializable;
-use core\storage\exceptions\DirtySavableException;
-use core\storage\exceptions\UnknownIdException;
+use \acul009\ControlPanel\core\storage\exceptions\DirtySavableException;
+use \acul009\ControlPanel\core\storage\exceptions\UnknownIdException;
+use \acul009\ControlPanel\core\ApiProvider;
 
 /**
  * This is a simple driver, which stores the object data inside the data directory.
@@ -21,11 +21,6 @@ use core\storage\exceptions\UnknownIdException;
  */
 abstract class SaveableFilesystemDriver extends SaveableBase {
 
-    private const SAVE_TYPE_ID = 0;
-    private const SAVE_TYPE_DATA = 1;
-    private const SAVE_KEY_TYPE = 1;
-    private const SAVE_KEY_DATA = 2;
-    private const SAVE_KEY_ID = 0;
     private const STORAGE_SUBFOLDER = 'SaveableObjects';
     private const DATA_SUBFOLDER = 'data';
     private const ID_FILE = 'id.bin';
@@ -128,7 +123,7 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
         return $cache[$type];
     }
 
-    public static function initDriver(\core\ApiProvider $api): void {
+    public static function initDriver(ApiProvider $api): void {
         self::$fs = $api->fs();
     }
 
@@ -141,6 +136,12 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
 
     private static function getTypename(): string {
         return str_replace('\\', '/', static::class);
+    }
+
+    protected function loadFromFilter(SaveableFilter $filter): array {
+        /*
+         * TODO
+         */
     }
 
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\storage;
 
 /**
  * Description of SavableTest
@@ -28,6 +28,10 @@ class SaveableTest extends SaveableObject {
 
     public function setTestString(string $testString): void {
         $this->testString = $testString;
+    }
+
+    protected function generateIndices(): IndexCollection|null {
+
     }
 
 }

@@ -7,7 +7,9 @@ set_error_handler(function (int $severity, string $message, string $filename, in
 
 const PHP_SUBDIR = 'php';
 spl_autoload_register(function (string $className) {
-    if (!str_starts_with($className, '\acul009\ControlPanel\\')) {
+    if (!str_starts_with($className, 'acul009\ControlPanel\\')) {
+        print_r('Fuck: ');
+        print_r($className);
         return;
     }
     static $phpDir;

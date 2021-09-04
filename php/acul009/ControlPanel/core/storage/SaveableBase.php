@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\storage;
 
-use core\security\exceptions\RestrictedFunctionException;
-use core\ApiProvider;
+use \acul009\ControlPanel\core\security\exceptions\RestrictedFunctionException;
+use \acul009\ControlPanel\core\ApiProvider;
 use ReflectionClass;
 
 /**
@@ -14,6 +14,12 @@ use ReflectionClass;
  * @author acul
  */
 abstract class SaveableBase {
+
+    private const SAVE_TYPE_ID = 0;
+    private const SAVE_TYPE_DATA = 1;
+    private const SAVE_KEY_TYPE = 1;
+    private const SAVE_KEY_DATA = 2;
+    private const SAVE_KEY_ID = 0;
 
     private static SaveableCache $cache;
     private int $id = -1;
@@ -133,7 +139,7 @@ abstract class SaveableBase {
      * }
      * </pre>
      *
-     * @return array[static] The found objects
+     * @return array The found objects
      */
     protected abstract function loadFromFilter(SaveableFilter $filter): array;
 

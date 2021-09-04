@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\security;
+namespace acul009\ControlPanel\core\security;
 
-use core\security\exceptions\ProtectedSingletonException;
+use \acul009\ControlPanel\core\security\exceptions\ProtectedSingletonException;
 
 /**
  * <pre>

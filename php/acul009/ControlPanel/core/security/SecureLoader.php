@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\security;
+namespace acul009\ControlPanel\core\security;
 
-use core\permissions\PermissionManager;
-use core\security\ProtectedSingleton;
+use \acul009\ControlPanel\core\permissions\PermissionManager;
+use \acul009\ControlPanel\core\security\ProtectedSingleton;
 
 /**
  * This class provides a way to load php files based on permissions.

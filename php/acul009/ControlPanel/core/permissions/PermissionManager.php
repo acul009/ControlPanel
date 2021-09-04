@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\permissions;
+namespace acul009\ControlPanel\core\permissions;
 
-use core\LibraryManager;
+use \acul009\ControlPanel\core\LibraryManager;
 
 /**
  * The Permission Manager is the actual interface for interacting with permissions.

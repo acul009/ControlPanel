@@ -1,6 +1,6 @@
 <?php
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\storage;
 
 /**
  * Description of IndexCollection

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core;
+namespace acul009\ControlPanel\core;
 
-use core\security\SecureLoader;
-use core\storage\SaveableBase;
-use core\drivers\SaveableDriver;
-use core\security\ProtectedSingleton;
+use \acul009\ControlPanel\core\security\SecureLoader;
+use \acul009\ControlPanel\core\storage\SaveableBase;
+use \acul009\ControlPanel\core\drivers\SaveableDriver;
+use \acul009\ControlPanel\core\security\ProtectedSingleton;
 
 /**
  * TODO:

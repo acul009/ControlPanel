@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\security\exceptions;
+namespace acul009\ControlPanel\core\security\exceptions;
 
 /**
  * Thrown when trying to create a protected Singleton, that has already been created

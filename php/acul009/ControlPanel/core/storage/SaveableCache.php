@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\storage;
 
-use core\security\ProtectedSingleton;
+use \acul009\ControlPanel\core\security\ProtectedSingleton;
 use \WeakReference;
-use \ReflectionClass;
 
 /**
  * This is the class responsible for managing the cached SavableObjects.
@@ -35,7 +34,7 @@ class SaveableCache extends ProtectedSingleton {
         $id = $saveable->getId();
         $this->instanceCache[$class][$id] = WeakReference::create($saveable);
     }
-    
+
     public function removeSaveable(SaveableObject $saveable) {
         $class = get_class($saveable);
         $id = $saveable->getId();
@@ -50,7 +49,7 @@ class SaveableCache extends ProtectedSingleton {
     }
 
     protected function init(): void {
-        
+
     }
 
 }

@@ -3,8 +3,8 @@
 declare(strict_types=1);
 include_once '../php/core/LibraryManager.php';
 
-use core\AuthenticationManager;
-use core\LibraryManager;
+use \acul009\ControlPanel\core\AuthenticationManager;
+use \acul009\ControlPanel\core\LibraryManager;
 use gui\PageBuilder;
 
 class Initiator {

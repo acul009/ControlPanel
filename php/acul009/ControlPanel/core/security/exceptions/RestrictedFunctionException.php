@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\security\exceptions;
+namespace acul009\ControlPanel\core\security\exceptions;
 
 use LogicException;
 

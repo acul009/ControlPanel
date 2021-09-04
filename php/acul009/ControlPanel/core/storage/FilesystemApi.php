@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\storage;
 
-use \core\security\ProtectedSingleton;
-use \core\LibraryManager2;
-use core\storage\exceptions\InvalidPathException;
+use \acul009\ControlPanel\core\security\ProtectedSingleton;
+use \acul009\ControlPanel\core\LibraryManager2;
+use \acul009\ControlPanel\core\storage\exceptions\InvalidPathException;
 
 /**
  * <pre>

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\storage;
 
-use core\drivers\SaveableDriver;
-use core\security\exceptions\RestrictedFunctionException;
+use \acul009\ControlPanel\core\drivers\SaveableDriver;
+use \acul009\ControlPanel\core\security\exceptions\RestrictedFunctionException;
 
 /**
  * This class can be used as a Parent if you need to store the object between runs.

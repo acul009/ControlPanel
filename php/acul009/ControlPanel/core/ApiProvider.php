@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace \acul009\ControlPanel\\acul009\ControlPanel\core;
+namespace acul009\ControlPanel\core;
 
-use core\storage\FilesystemApi;
-use core\LibraryManager2;
-use core\security\ProtectedSingleton;
+use \acul009\ControlPanel\core\storage\FilesystemApi;
+use \acul009\ControlPanel\core\LibraryManager2;
+use \acul009\ControlPanel\core\security\ProtectedSingleton;
 
 /**
  * The ApiProvider supplies others with the neccesary api access.
