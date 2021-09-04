@@ -10,7 +10,6 @@ spl_autoload_register(function (string $className) {
     if (!str_starts_with($className, '\acul009\ControlPanel\\'))
         static $phpDir;
     if (!isset($phpDir)) {
-        ş
         $phpDir = dirname(getcwd()) . DIRECTORY_SEPARATOR . PHP_SUBDIR . DIRECTORY_SEPARATOR;
     }
     $filename = $phpDir . str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
