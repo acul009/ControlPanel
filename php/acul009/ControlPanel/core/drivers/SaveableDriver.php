@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace acul009\ControlPanel\core\drivers;
 
-use \acul009\ControlPanel\core\storage\SaveableFilesystemDriver;
-use \acul009\ControlPanel\core\storage\SaveableDriverInterface;
+use \acul009\ControlPanel\core\Storage\Saveable\FilesystemDriver;
 
 /**
  * Replace the parent class to change the driver used for SavableObject
@@ -13,6 +12,6 @@ use \acul009\ControlPanel\core\storage\SaveableDriverInterface;
  *
  * @author acul
  */
-abstract class SaveableDriver extends SaveableFilesystemDriver implements SaveableDriverInterface {
-    
+abstract class SaveableDriver extends FilesystemDriver {
+
 }

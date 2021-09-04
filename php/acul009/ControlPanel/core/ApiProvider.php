@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace acul009\ControlPanel\core;
 
-use \acul009\ControlPanel\core\storage\FilesystemApi;
+use \acul009\ControlPanel\core\Storage\FilesystemApi;
 use \acul009\ControlPanel\core\LibraryManager2;
 use \acul009\ControlPanel\core\security\ProtectedSingleton;
 

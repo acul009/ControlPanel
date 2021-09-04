@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\Storage\Exceptions;
 
 use UnexpectedValueException;
 
@@ -13,9 +13,9 @@ use UnexpectedValueException;
  * </pre>
  * @author acul
  */
-class InvalidPathException extends \UnexpectedValueException {
+class InvalidPathException extends UnexpectedValueException {
 
-    public function __construct(string $path = "", int $code = 0, \Throwable $previous = NULL): \InvalidPathNameException {
+    public function __construct(string $path = "", int $code = 0, \Throwable $previous = NULL) {
         $message = 'The given Path "' . $path . '" is invalid or forbidden.';
         parent::__construct($message, $code, $previous);
     }

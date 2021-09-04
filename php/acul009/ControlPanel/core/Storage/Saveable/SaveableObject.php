@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\Storage\Saveable;
 
 use \acul009\ControlPanel\core\drivers\SaveableDriver;
 use \acul009\ControlPanel\core\security\exceptions\RestrictedFunctionException;

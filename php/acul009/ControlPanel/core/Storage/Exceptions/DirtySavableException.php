@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace acul009\ControlPanel\core\storage\exceptions;
+namespace acul009\ControlPanel\core\Storage\Exceptions;
 
 use \LogicException;
 

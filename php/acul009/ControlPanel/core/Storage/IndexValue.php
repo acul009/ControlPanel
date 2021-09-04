@@ -1,6 +1,6 @@
 <?php
 
-namespace acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\Storage;
 
 /**
  * Description of IndexValue

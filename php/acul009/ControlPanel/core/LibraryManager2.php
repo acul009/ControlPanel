@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace acul009\ControlPanel\core;
 
 use \acul009\ControlPanel\core\security\SecureLoader;
-use \acul009\ControlPanel\core\storage\SaveableBase;
+use \acul009\ControlPanel\core\Storage\Saveable\Base;
 use \acul009\ControlPanel\core\drivers\SaveableDriver;
 use \acul009\ControlPanel\core\security\ProtectedSingleton;
 
@@ -32,7 +32,7 @@ class LibraryManager2 extends ProtectedSingleton {
 
     protected function init(): void {
         $this->updateWorkingDir();
-        SaveableBase::initSaveableCache();
+        Base::initCache();
         $this->api = ApiProvider::create($this);
         SaveableDriver::initDriver($this->api);
     }

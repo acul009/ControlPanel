@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\Storage\Saveable;
 
 use \acul009\ControlPanel\core\security\ProtectedSingleton;
 use \WeakReference;
@@ -12,7 +12,7 @@ use \WeakReference;
  *
  * @author acul
  */
-class SaveableCache extends ProtectedSingleton {
+class Cache extends ProtectedSingleton {
 
     private array $instanceCache = [];
 
@@ -21,7 +21,7 @@ class SaveableCache extends ProtectedSingleton {
         if (!isset($this->instanceCache[$class])) {
             $this->instanceCache[$class] = [];
         }
-        if (!isset($this->instanceCache[$class][$id]) || (($saveable = $this->instanceCache[$class][$id]->acquire()) === null)) {
+        if (!isset($this->instanceCache[$class][$id]) || (($saveable = $this->instanceCache[$class][$id]->get()) === null)) {
             $saveable = $class::loadFromIdFromDatabase($id);
             $this->instanceCache[$class][$id] = WeakReference::create($saveable);
         }
@@ -42,7 +42,6 @@ class SaveableCache extends ProtectedSingleton {
     }
 
     private function createMissingArrays(string $class): void {
-        $reflection = $this->getSavableReflection($class);
         if (!isset($this->instanceCache[$class])) {
             $this->instanceCache[$class] = [];
         }

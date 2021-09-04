@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\Storage\Saveable;
 
 /**
  * Objects of this class are used as a syntax free way to add filters to db requests.
@@ -10,7 +10,7 @@ namespace acul009\ControlPanel\core\storage;
  *
  * @author acul
  */
-class SaveableFilter {
+class Filter {
 
     const OPERATOR_OR = 0;
     const OPERATOR_AND = 1;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\Storage\Saveable;
 
 use \utils\StringTools;
-use \acul009\ControlPanel\core\storage\exceptions\DirtySavableException;
-use \acul009\ControlPanel\core\storage\exceptions\UnknownIdException;
+use \acul009\ControlPanel\core\Storage\Exceptions\UnknownIdException;
 use \acul009\ControlPanel\core\ApiProvider;
+use \acul009\ControlPanel\core\Storage\FilesystemApi;
 
 /**
  * This is a simple driver, which stores the object data inside the data directory.
@@ -19,13 +19,12 @@ use \acul009\ControlPanel\core\ApiProvider;
  *
  * @author acul
  */
-abstract class SaveableFilesystemDriver extends SaveableBase {
+abstract class FilesystemDriver extends Base {
 
     private const STORAGE_SUBFOLDER = 'SaveableObjects';
     private const DATA_SUBFOLDER = 'data';
     private const ID_FILE = 'id.bin';
 
-    private bool $isDirty = false;
     private static FilesystemApi $fs;
 
     public function saveToDatabase(): int {
@@ -127,18 +126,11 @@ abstract class SaveableFilesystemDriver extends SaveableBase {
         self::$fs = $api->fs();
     }
 
-    public static function init(): static {
-        if ($this->isDirty) {
-            return static::loadFromId(parent::getId());
-        }
-        return $this;
-    }
-
     private static function getTypename(): string {
         return str_replace('\\', '/', static::class);
     }
 
-    protected function loadFromFilter(SaveableFilter $filter): array {
+    protected function loadFromFilter(Filter $filter): array {
         /*
          * TODO
          */

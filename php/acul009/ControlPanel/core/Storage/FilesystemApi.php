@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\Storage;
 
 use \acul009\ControlPanel\core\security\ProtectedSingleton;
 use \acul009\ControlPanel\core\LibraryManager2;

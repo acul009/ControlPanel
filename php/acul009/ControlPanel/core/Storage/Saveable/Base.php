@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace acul009\ControlPanel\core\storage;
+namespace acul009\ControlPanel\core\Storage\Saveable;
 
-use \acul009\ControlPanel\core\security\exceptions\RestrictedFunctionException;
 use \acul009\ControlPanel\core\ApiProvider;
-use ReflectionClass;
 
 /**
  * The base class for Savable Drivers - includes basic cache
  *
  * @author acul
  */
-abstract class SaveableBase {
+abstract class Base extends IdObject {
 
     private const SAVE_TYPE_ID = 0;
     private const SAVE_TYPE_DATA = 1;
@@ -21,9 +19,9 @@ abstract class SaveableBase {
     private const SAVE_KEY_DATA = 2;
     private const SAVE_KEY_ID = 0;
 
-    private static SaveableCache $cache;
-    private int $id = -1;
+    private static Cache $cache;
     private bool $serializeable = false;
+    private bool $isDirty = false;
 
     protected function getSerializeable(): bool {
         return $this->serializeable;
@@ -43,19 +41,9 @@ abstract class SaveableBase {
         return $id;
     }
 
-    public abstract function deleteFromDatabase(): void;
-
     public function delete(): void {
         self::$cache->removeSaveable($this);
         $this->deleteFromDatabase();
-    }
-
-    public function getId(): int {
-        return $this->id;
-    }
-
-    protected function setId(int $id): void {
-        $this->id = $id;
     }
 
     public static function loadFromId(int $id): static {
@@ -64,9 +52,9 @@ abstract class SaveableBase {
 
     public abstract static function initDriver(ApiProvider $api): void;
 
-    public static final function initSaveableCache(): void {
+    public static final function initCache(): void {
         if (!isset(self::$cache)) {
-            self::$cache = SaveableCache::create();
+            self::$cache = Cache::create();
         }
     }
 
@@ -114,6 +102,13 @@ abstract class SaveableBase {
         }
     }
 
+    public static function init(): static {
+        if ($this->isDirty) {
+            return static::loadFromId(parent::getId());
+        }
+        return $this;
+    }
+
     protected function loadDataFromArray(array $data): void {
         /*
          * Pass by reference is extremly important here!
@@ -128,20 +123,20 @@ abstract class SaveableBase {
     }
 
     /**
-     * You can use this function to load your saveableObjects by filtering
+     * You can use this function to load your Objects by filtering
      * with your indices.
      * <br>
      * This function is meant to be used in a wrapper function e.g.:
      * <br>
      * <pre>
      * public function loadByUsername(string $username){
-     * &nbsp;&nbsp; return self::loadFromFilter(SaveableFilter::equals('username', $username);
+     * &nbsp;&nbsp; return self::loadFromFilter(Filter::equals('username', $username);
      * }
      * </pre>
      *
      * @return array The found objects
      */
-    protected abstract function loadFromFilter(SaveableFilter $filter): array;
+    protected abstract function loadFromFilter(Filter $filter): array;
 
     /**
      * Use this function to return an associative array of values you can later
