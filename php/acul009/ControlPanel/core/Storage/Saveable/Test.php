@@ -31,7 +31,7 @@ class Test extends SaveableObject {
     }
 
     protected function generateIndices(): IndexCollection|null {
-
+        return null;
     }
 
 }
