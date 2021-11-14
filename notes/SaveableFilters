@@ -1,0 +1,13 @@
+Saveables have to be loaded with the help of a filters.
+Filters should support basic operations like AND, OR and NOT
+Filters should be able to filter Indices for EQUAL, NOT_EQUAL, GREATER_THAN, LESS_THAN and IN
+Filters should be able to filter by ID
+Filters do not need to filter for object properties. All things that should be filtered need to be indexed.
+
+Indices can support the following operations:
+Interger    -   EQUAL, NOT_EQUAL, GREATER_THAN, LESS_THAN, IN
+Float       -   EQUAL, NOT_EQUAL, GREATER_THAN, LESS_THAN, IN
+Bool        -   EQUAL, NOT_EQUAL
+String      -   EQUAL, NOT_EQUAL, IN (Hashed)
+Others      -   Serialize to String - Sensitive to array and object internal sortOrder
+
