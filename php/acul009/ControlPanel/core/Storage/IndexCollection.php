@@ -16,7 +16,7 @@ class IndexCollection {
     }
 
     public function addIndex(IndexValue $index): void {
-        $this->indices[] = $index;
+        $this->indices[$index->getName()] = $index;
     }
 
     public function getIndices(): array {

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace acul009\ControlPanel\core\Storage\Saveable;
 
-use \acul009\ControlPanel\core\ApiProvider;
+use acul009\ControlPanel\core\ApiProvider;
+use acul009\ControlPanel\core\Storage\IndexCollection;
 
 /**
  * The base class for Savable Drivers - includes basic cache
@@ -22,6 +23,7 @@ abstract class Base extends IdObject {
     private static Cache $cache;
     private bool $serializeable = false;
     private bool $isDirty = false;
+    protected null|IndexCollection $indices = null;
 
     protected function getSerializeable(): bool {
         return $this->serializeable;
@@ -55,18 +57,6 @@ abstract class Base extends IdObject {
     public static final function initCache(): void {
         if (!isset(self::$cache)) {
             self::$cache = Cache::create();
-        }
-    }
-
-    protected final function getIndices(): array {
-        $rawIndices = $this->generateIndices();
-        $preparedIndices = [];
-        foreach ($rawIndices as $indexName => $value) {
-            if (is_object($value) || is_array($value)) {
-                $preparedIndices[$indexName] = serialize($value);
-            } else {
-                $preparedIndices[$indexName] = $value;
-            }
         }
     }
 
@@ -156,5 +146,5 @@ abstract class Base extends IdObject {
      * <br>
      * <b>Filters are effected by things like array order! Sort arrays before returning to avoid confusion.</b>
      */
-    protected abstract function generateIndices(): IndexCollection|null;
+    protected abstract function generateIndices(): ?IndexCollection;
 }

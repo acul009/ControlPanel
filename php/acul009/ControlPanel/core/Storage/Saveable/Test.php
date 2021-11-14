@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace acul009\ControlPanel\core\Storage\Saveable;
 
+use acul009\ControlPanel\core\Storage\IndexValue;
+use acul009\ControlPanel\core\Storage\IndexCollection;
+
 /**
  * Description of SavableTest
  *
@@ -30,7 +33,8 @@ class Test extends SaveableObject {
         $this->testString = $testString;
     }
 
-    protected function generateIndices(): IndexCollection|null {
+    protected function generateIndices(): ?IndexCollection {
+        $objTestIndex = IndexValue::create('test', $this->testString, true);
         return null;
     }
 
