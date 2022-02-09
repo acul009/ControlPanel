@@ -4,3 +4,4 @@ This is mostly for fun and to learn.
 I'm pretty sure there are Platforms which are by far superior.
 
 This Project has been abandoned in favor of a new platform based on Nodejs and Angular
+If you find anything useful or interesting in here, feel free to use it.
